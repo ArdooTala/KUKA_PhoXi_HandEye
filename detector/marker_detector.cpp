@@ -71,6 +71,17 @@ void PhoXiCam::initDevice () {
         return;
     }
 
+    //Get the current Output configuration
+    pho::api::FrameOutputSettings NewOutputSettings;
+    NewOutputSettings.SendPointCloud = true;
+    NewOutputSettings.SendNormalMap = false;
+    NewOutputSettings.SendDepthMap = true;
+    NewOutputSettings.SendConfidenceMap = false;
+    NewOutputSettings.SendTexture = true;
+    NewOutputSettings.SendColorCameraImage = true;
+    NewOutputSettings.SendEventMap = false;
+    device->OutputSettings = NewOutputSettings;
+
     device->MotionCam->OperationMode = pho::api::PhoXiOperationMode::Scanner;
     device->MotionCamScannerMode->TextureSource = pho::api::PhoXiTextureSource::LED;
     device->CoordinatesSettings->CameraSpace = pho::api::PhoXiCameraSpace::PrimaryCamera;
