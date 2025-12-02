@@ -18,7 +18,21 @@ PhoXiCam::~PhoXiCam () {
     if (device) {
         std::cout << "Wow wow wow...What's the rush?!" << std::endl;
         if (device->isAcquiring()) device->StopAcquisition();
+
+        //Wait for recorder to finish recording all wanted frames before stopping recording.
+        //This function will return frame index even for frames which were not actually recorded
+        //due to `every` (every n-th) skipping.
+        while(lastFrameIndex != device->LastRecordedFrameIndex()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+
+        if (!device->StopRecording()) {
+            std::cout << "Failed to stop recording!" << std::endl;
+        }
+
+        device->Disconnect();
     }
+
 }
 
 bool PhoXiCam::connect() {
@@ -50,11 +64,54 @@ void PhoXiCam::initDevice () {
         std::cerr << "Could not connect to the device!" <<std::endl;
         return;
     }
+
+    device->TriggerMode = pho::api::PhoXiTriggerMode::Software;
+    if(!device->TriggerMode.isLastOperationSuccessful()) {
+        std::cout << "Failed to set trigger mode to Software!";
+        return;
+    }
+
     device->MotionCam->OperationMode = pho::api::PhoXiOperationMode::Scanner;
     device->MotionCamScannerMode->TextureSource = pho::api::PhoXiTextureSource::LED;
     device->CoordinatesSettings->CameraSpace = pho::api::PhoXiCameraSpace::PrimaryCamera;
     device->CoordinatesSettings->CoordinateSpace = pho::api::PhoXiCoordinateSpace::MarkerSpace;
     device->CoordinatesSettings->RecognizeMarkers = true;
+
+    if (device->IsRecording()) {
+        device->StopRecording();
+    }
+
+    // Note: relative path is relative to PhoXiControl working directory: ~/.PhotoneoPhoXiControl
+    auto plyRecordingOptions = R"json({
+        "folder": "/home/ardeshir/Desktop/RecordingExampleOutput",
+        "every": 1,
+        "capacity": -1,
+        "pattern": "scan_####",
+        "overwrite_existing": true,
+        "containers": {
+            "ply": {
+                "enabled": true,
+                "point_cloud": true,
+                "depth_map": true,
+                "texture": true
+            },
+            "tif": {
+                "enabled": true,
+                "point_cloud": false,
+                "color_camera_image": true,
+                "depth_map": true,
+                "texture": true,
+                "split_rgb_channels": false
+            }
+        }
+    })json";
+
+    //Start recording with setup json options for PLY container, do not store options persistently
+    pho::api::PhoXi::StartRecordingResult ret = device->StartRecording(plyRecordingOptions, false);
+    if (ret != pho::api::PhoXi::StartRecordingResult::Success) {
+        std::cout << "Failed to start recording! Error: " << static_cast<int>(ret) << std::endl;
+        return;
+    }
 
     std::cout << "Device config is set for calibration." << std::endl;
 }
@@ -82,16 +139,16 @@ void PhoXiCam::trigger() {
         throw std::runtime_error("Scanner is not acquiring");
 
     std::cout << "Triggering a scan..." << std::endl;
-    const auto frameID = device->TriggerFrame(
+    lastFrameIndex = device->TriggerFrame(
             /*WaitForAccept*/true,
             /*WaitForGrabbingEnd*/true);
 
-    if (frameID < 0) {
+    if (lastFrameIndex < 0) {
         // If negative number is returned trigger was unsuccessful
         throw std::runtime_error("Trigger was unsuccessful!");
     }
 
-    std::cout << "Scan was triggered, Frame Id: " << frameID << std::endl;
+    std::cout << "Scan was triggered, Frame Id: " << lastFrameIndex << std::endl;
 
     // Wait for a frame with specific FrameID. There is a possibility, that
     // frame triggered before the trigger will arrive after the trigger
@@ -101,7 +158,7 @@ void PhoXiCam::trigger() {
     // is doing that internally in background
     // You can specify Timeout here - default is the Timeout stored in Timeout
     // Feature -> Infinity by default
-    frame = device->GetSpecificFrame(frameID);
+    frame = device->GetSpecificFrame(lastFrameIndex);
 
     if (!frame || !frame->Successful) {
         throw std::runtime_error("Failed to retrieve frame");

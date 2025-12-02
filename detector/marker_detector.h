@@ -20,6 +20,7 @@ private:
     pho::api::PhoXiFactory factory;
     pho::api::PPhoXi device;
     pho::api::PFrame frame;
+    int lastFrameIndex;
     pho::api::PhoXiCoordinateTransformation cameraPosition;
 };
 
