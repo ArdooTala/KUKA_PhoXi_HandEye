@@ -10,6 +10,9 @@ public:
     PhoXiCam (std::string id);
     ~PhoXiCam ();
     void initDevice();
+    void trigger();
+    pho::api::PhoXiCoordinateTransformation getCameraTransform();
+    void saveFrame();
 private:
     bool connect();
 private:
@@ -17,6 +20,7 @@ private:
     pho::api::PhoXiFactory factory;
     pho::api::PPhoXi device;
     pho::api::PFrame frame;
+    pho::api::PhoXiCoordinateTransformation cameraPosition;
 };
 
 } // namespace markerDetection

@@ -14,7 +14,14 @@ int main() {
   TcpServer server(PORT);
   server.msgCallback = [&camera](std::string msg) {
     std::cout << "Callbacking...!!" << std::endl;
+        camera.trigger();
+        auto tf = camera.getCameraTransform();
+        std::cout << "x: " << tf.Translation.x << std::endl;
+        std::cout << "y: " << tf.Translation.y << std::endl;
+        std::cout << "z: " << tf.Translation.z << std::endl;
+        std::cout << msg << std::endl;
   };
+
   if (!server.start()) {
     std::cerr << "Failed to start the server" << std::endl;
     return -1;
