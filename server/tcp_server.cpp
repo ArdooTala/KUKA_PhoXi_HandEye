@@ -7,9 +7,9 @@
 #include <sys/socket.h> // For socket(), bind(), listen(), accept()
 #include <unistd.h>     // For close(), read()
 
-TcpServer::TcpServer(int port) :
-    port(port), server_fd(-1), is_running(false), client_socket(0), client_address()
-{}
+TcpServer::TcpServer(int port)
+    : port(port), server_fd(-1), is_running(false), client_socket(0),
+      client_address() {}
 
 TcpServer::~TcpServer() {
   if (is_running) {
@@ -79,7 +79,7 @@ int TcpServer::acceptClient() {
     return -1;
   }
 
-    client_socket = new_socket;
+  client_socket = new_socket;
 
   return new_socket;
 }
@@ -106,7 +106,7 @@ std::string TcpServer::receiveMessage(int buffer_size) {
   } else if (bytes_read == 0) {
     std::cout << "Client disconnected" << std::endl;
     delete[] buffer;
-        stop();
+    stop();
     return ""; // Client closed the connection
   }
 
@@ -124,8 +124,8 @@ std::string TcpServer::receiveMessage(int buffer_size) {
 void TcpServer::stop() {
   if (client_socket) {
     close(client_socket);
-        client_socket = -1;
-    }
+    client_socket = -1;
+  }
   if (is_running) {
     close(server_fd);
     server_fd = -1;
