@@ -14,12 +14,16 @@ int main() {
   TcpServer server(PORT);
   server.msgCallback = [&camera](std::string msg) {
     std::cout << "Callbacking...!!" << std::endl;
-    camera.trigger();
-    auto tf = camera.getCameraTransform();
-    std::cout << "x: " << tf.Translation.x << std::endl;
-    std::cout << "y: " << tf.Translation.y << std::endl;
-    std::cout << "z: " << tf.Translation.z << std::endl;
     std::cout << msg << std::endl;
+    try {
+      camera.trigger();
+      auto tf = camera.getCameraTransform();
+      std::cout << "x: " << tf.Translation.x << std::endl;
+      std::cout << "y: " << tf.Translation.y << std::endl;
+      std::cout << "z: " << tf.Translation.z << std::endl;
+    } catch (...) {
+      std::cerr << "Capture failed!" << std::endl;
+    }
   };
 
   if (!server.start()) {
@@ -38,6 +42,7 @@ int main() {
   std::cout << "Client IP: " << server.getClientIp() << std::endl;
 
   while (!server.receiveMessage().empty()) {
+    server.sendMessage("<BasicRecv><Flag12></Flag12></BasicRecv>");
   }
 
   return 0;
