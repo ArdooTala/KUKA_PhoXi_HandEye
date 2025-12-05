@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(server)
 add_subdirectory(detector)
+add_subdirectory(kuka_utils)
 
 add_executable(HandEyeCalibration)
 
@@ -19,4 +20,5 @@ target_link_libraries(HandEyeCalibration
     PUBLIC
         tcp_server_lib
         marker_detector_lib
+        KukaUtils
 )
