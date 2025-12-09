@@ -2,6 +2,7 @@
 #include "kuka_utils/kuka_utils.h"
 #include "pugixml.hpp"
 #include "server/tcp_server.h"
+#include "handeye/handeye.h"
 #include <iostream>
 #include <string>
 
@@ -16,6 +17,8 @@ int main() {
   server.msgCallback = [&camera](std::string msg) {
     std::cout << "Callbacking...!!" << std::endl;
     std::cout << msg << std::endl;
+
+    auto pos = KukaUtils::E6POS(msg);
 
     // try {
     //   camera.trigger();
