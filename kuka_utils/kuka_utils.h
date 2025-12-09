@@ -1,13 +1,23 @@
 #pragma once
 
 #include <Eigen/Geometry>
+#include <pugixml.hpp>
 
 namespace KukaUtils {
 
-const double deg2rad = M_PI / 180.0;
+const double DEG2RAD = M_PI / 180.0;
 
-Eigen::Matrix<double, 6, 1> e6pos_from_xml(std::string &xmlMsg);
+struct E6POS {
+    double x, y, z, a, b, c;
 
-Eigen::Matrix3d eulerZYX_to_matrix3d(double a, double b, double c);
+    E6POS (std::string& xml_msg);
+
+    Eigen::Vector3d t() const;
+    Eigen::Matrix3d r() const;
+    operator Eigen::Transform<double, 3, 1>() const;
+
+private:
+    Eigen::Matrix3d abc2matrix3d(double a, double b, double c) const;
+};
 
 } // namespace KukaUtils

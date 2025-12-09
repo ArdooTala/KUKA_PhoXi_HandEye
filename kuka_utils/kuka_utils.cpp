@@ -1,33 +1,38 @@
 #include "kuka_utils.h"
-#include <Eigen/Dense>
+#include <Eigen/Geometry>
 #include <pugixml.hpp>
 
 namespace KukaUtils {
 
-Eigen::Matrix<double, 6, 1> e6pos_from_xml(std::string &xmlMsg) {
-    pugi::xml_document doc;
-    pugi::xml_parse_result result = doc.load_string(xmlMsg.data());
-    // Check if parse was successful
+E6POS::E6POS(std::string &xml_msg) {
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_string(xml_msg.data());
+  // Check if parse was successful
 
-    pugi::xpath_node pos = doc.select_node("/StateSend/Position");
+  pugi::xpath_node pos = doc.select_node("/StateSend/Position");
 
-    double x = pos.node().attribute("X").as_double();
-    double y = pos.node().attribute("Y").as_double();
-    double z = pos.node().attribute("Z").as_double();
-    double a = pos.node().attribute("A").as_double();
-    double b = pos.node().attribute("B").as_double();
-    double c = pos.node().attribute("C").as_double();
-    Eigen::Matrix<double, 6, 1> e6pos;
-    e6pos << x, y, z, a, b, c;
-
-    return e6pos;
+  x = pos.node().attribute("X").as_double();
+  y = pos.node().attribute("Y").as_double();
+  z = pos.node().attribute("Z").as_double();
+  a = pos.node().attribute("A").as_double();
+  b = pos.node().attribute("B").as_double();
+  c = pos.node().attribute("C").as_double();
 }
 
-Eigen::Matrix3d eulerZYX_to_matrix3d(double a, double b, double c) {
+Eigen::Vector3d E6POS::t() const { return Eigen::Vector3d(x, y, z); }
+
+Eigen::Matrix3d E6POS::r() const { return abc2matrix3d(a, b, c); }
+
+E6POS::operator Eigen::Transform<double, 3, 1>() const {
+  auto tf = Eigen::Transform<double, 3, 1>();
+  tf.rotate(r()).translate(t());
+  return tf;
+}
+Eigen::Matrix3d E6POS::abc2matrix3d(double a, double b, double c) const {
   Eigen::Quaterniond q =
-      Eigen::AngleAxisd(a * deg2rad, Eigen::Vector3d::UnitZ()) *
-      Eigen::AngleAxisd(b * deg2rad, Eigen::Vector3d::UnitY()) *
-      Eigen::AngleAxisd(c * deg2rad, Eigen::Vector3d::UnitX());
+      Eigen::AngleAxisd(a * DEG2RAD, Eigen::Vector3d::UnitZ()) *
+      Eigen::AngleAxisd(b * DEG2RAD, Eigen::Vector3d::UnitY()) *
+      Eigen::AngleAxisd(c * DEG2RAD, Eigen::Vector3d::UnitX());
 
   return q.matrix();
 }
