@@ -5,6 +5,8 @@ project(marker_detector)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+find_package(Eigen3 REQUIRED)
+
 add_library(marker_detector_lib STATIC marker_detector.cpp marker_detector.h)
 
 if(NOT PHO_API_CMAKE_CONFIG_PATH)
@@ -23,5 +25,6 @@ target_link_libraries(marker_detector_lib
 target_include_directories(marker_detector_lib
     PUBLIC
         ${PHOXI_INCLUDE_DIRS}
+        ${EIGEN3_INCLUDE_DIR}
 )
 

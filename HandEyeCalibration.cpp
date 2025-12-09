@@ -1,34 +1,46 @@
 #include "detector/marker_detector.h"
+#include "handeye/handeye.h"
 #include "kuka_utils/kuka_utils.h"
 #include "pugixml.hpp"
 #include "server/tcp_server.h"
-#include "handeye/handeye.h"
 #include <iostream>
 #include <string>
 
 #define PORT 59153
 
+std::vector<Eigen::Transform<double, 3, 1>> rob2world(20);
+std::vector<Eigen::Transform<double, 3, 1>> cam2board(20);
+
 int main() {
   std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
   markerDetection::PhoXiCam camera("PAD-104");
-  // camera.initDevice();
+  camera.initDevice();
 
   TcpServer server(PORT);
   server.msgCallback = [&camera](std::string msg) {
     std::cout << "Callbacking...!!" << std::endl;
     std::cout << msg << std::endl;
 
-    auto pos = KukaUtils::E6POS(msg);
+    auto rob_pos = KukaUtils::E6POS(msg);
+    std::cout << rob_pos.t() << std::endl;
+    std::cout << rob_pos.r() << std::endl;
 
-    // try {
-    //   camera.trigger();
-    //   auto tf = camera.getCameraTransform();
-    //   std::cout << "x: " << tf.Translation.x << std::endl;
-    //   std::cout << "y: " << tf.Translation.y << std::endl;
-    //   std::cout << "z: " << tf.Translation.z << std::endl;
-    // } catch (...) {
-    //   std::cerr << "Capture failed!" << std::endl;
-    // }
+    try {
+      camera.trigger();
+      auto tf = camera.getCameraTransform();
+      std::cout << "x: " << tf.Translation.x << std::endl;
+      std::cout << "y: " << tf.Translation.y << std::endl;
+      std::cout << "z: " << tf.Translation.z << std::endl;
+
+      auto marker_tf = markerDetection::phoxi2eigen(tf);
+      std::cout << marker_tf.translation() << std::endl;
+      std::cout << marker_tf.rotation() << std::endl;
+
+    } catch (...) {
+      std::cerr << "Capture failed!" << std::endl;
+    }
+
+    rob2world.push_back(rob_pos);
   };
 
   if (!server.start()) {

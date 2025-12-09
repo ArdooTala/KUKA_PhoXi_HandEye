@@ -212,4 +212,26 @@ pho::api::PhoXiCoordinateTransformation PhoXiCam::getCameraTransform() {
 
 void PhoXiCam::saveFrame() {}
 
+Eigen::Isometry3d
+phoxi2eigen(pho::api::PhoXiCoordinateTransformation &phoxi_tf) {
+  Eigen::Isometry3d eigen_tf;
+
+  eigen_tf.linear()(0, 0) = phoxi_tf.Rotation[0][0];
+  eigen_tf.linear()(0, 1) = phoxi_tf.Rotation[0][1];
+  eigen_tf.linear()(0, 2) = phoxi_tf.Rotation[0][2];
+
+  eigen_tf.linear()(1, 0) = phoxi_tf.Rotation[1][0];
+  eigen_tf.linear()(1, 1) = phoxi_tf.Rotation[1][1];
+  eigen_tf.linear()(1, 2) = phoxi_tf.Rotation[1][2];
+
+  eigen_tf.linear()(2, 0) = phoxi_tf.Rotation[2][0];
+  eigen_tf.linear()(2, 1) = phoxi_tf.Rotation[2][1];
+  eigen_tf.linear()(2, 2) = phoxi_tf.Rotation[2][2];
+
+  eigen_tf.translation() << phoxi_tf.Translation.x,
+                            phoxi_tf.Translation.y,
+                            phoxi_tf.Translation.z;
+
+  return eigen_tf;
+}
 } // namespace markerDetection

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <PhoXi.h>
+#include <Eigen/Geometry>
 #include <string>
 
 namespace markerDetection {
@@ -25,5 +26,7 @@ private:
   int lastFrameIndex;
   pho::api::PhoXiCoordinateTransformation cameraPosition;
 };
+
+Eigen::Transform<double, 3, 1> phoxi2eigen (pho::api::PhoXiCoordinateTransformation& phoxi_tf) ;
 
 } // namespace markerDetection
