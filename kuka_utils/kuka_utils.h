@@ -14,7 +14,7 @@ struct E6POS {
 
     Eigen::Vector3d t() const;
     Eigen::Matrix3d r() const;
-    operator Eigen::Transform<double, 3, 1>() const;
+    operator Eigen::Isometry3d() const;
 
 private:
     Eigen::Matrix3d abc2matrix3d(double a, double b, double c) const;

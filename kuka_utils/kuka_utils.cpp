@@ -23,11 +23,13 @@ Eigen::Vector3d E6POS::t() const { return Eigen::Vector3d(x, y, z); }
 
 Eigen::Matrix3d E6POS::r() const { return abc2matrix3d(a, b, c); }
 
-E6POS::operator Eigen::Transform<double, 3, 1>() const {
-  auto tf = Eigen::Transform<double, 3, 1>();
-  tf.rotate(r()).translate(t());
+E6POS::operator Eigen::Isometry3d() const {
+  Eigen::Isometry3d tf;
+  tf.linear() = r();
+  tf.translation() = t();
   return tf;
 }
+
 Eigen::Matrix3d E6POS::abc2matrix3d(double a, double b, double c) const {
   Eigen::Quaterniond q =
       Eigen::AngleAxisd(a * DEG2RAD, Eigen::Vector3d::UnitZ()) *

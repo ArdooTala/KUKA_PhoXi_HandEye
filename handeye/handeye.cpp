@@ -10,9 +10,9 @@
 
 namespace HandEye {
 
-Eigen::Transform<double, 3, 1>
-calibrate_hand_eye(std::vector<Eigen::Transform<double, 3, 1>> &cam,
-                   std::vector<Eigen::Transform<double, 3, 1>> &rob) {
+Eigen::Isometry3d
+calibrate_hand_eye(std::vector<Eigen::Isometry3d> &cam,
+                   std::vector<Eigen::Isometry3d> &rob) {
   int count = cam.size();
   std::vector<cv::Mat> R_gripper2base(count), t_gripper2base(count),
       R_target2cam(count), t_target2cam(count);
@@ -36,7 +36,7 @@ calibrate_hand_eye(std::vector<Eigen::Transform<double, 3, 1>> &cam,
   Eigen::Vector3d t_res;
   cv::cv2eigen(t_cam2gripper, t_res);
 
-  Eigen::Transform<double, 3, 1> result;
+  Eigen::Isometry3d result;
   result.translate(t_res);
   result.rotate(R_res);
 

@@ -27,6 +27,6 @@ private:
   pho::api::PhoXiCoordinateTransformation cameraPosition;
 };
 
-Eigen::Transform<double, 3, 1> phoxi2eigen (pho::api::PhoXiCoordinateTransformation& phoxi_tf) ;
+Eigen::Isometry3d phoxi2eigen (pho::api::PhoXiCoordinateTransformation& phoxi_tf) ;
 
 } // namespace markerDetection

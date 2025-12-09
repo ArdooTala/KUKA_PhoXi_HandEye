@@ -8,38 +8,38 @@
 
 #define PORT 59153
 
-std::vector<Eigen::Transform<double, 3, 1>> rob2world(20);
-std::vector<Eigen::Transform<double, 3, 1>> cam2board(20);
+std::vector<Eigen::Isometry3d> rob2world;
+std::vector<Eigen::Isometry3d> cam2board;
 
 int main() {
   std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
+  rob2world.reserve(20);
+  cam2board.reserve(20);
+
   markerDetection::PhoXiCam camera("PAD-104");
   camera.initDevice();
 
   TcpServer server(PORT);
   server.msgCallback = [&camera](std::string msg) {
     std::cout << "Callbacking...!!" << std::endl;
-    std::cout << msg << std::endl;
-
-    auto rob_pos = KukaUtils::E6POS(msg);
-    std::cout << rob_pos.t() << std::endl;
-    std::cout << rob_pos.r() << std::endl;
 
     try {
       camera.trigger();
-      auto tf = camera.getCameraTransform();
-      std::cout << "x: " << tf.Translation.x << std::endl;
-      std::cout << "y: " << tf.Translation.y << std::endl;
-      std::cout << "z: " << tf.Translation.z << std::endl;
-
-      auto marker_tf = markerDetection::phoxi2eigen(tf);
-      std::cout << marker_tf.translation() << std::endl;
-      std::cout << marker_tf.rotation() << std::endl;
-
     } catch (...) {
       std::cerr << "Capture failed!" << std::endl;
+      return;
     }
 
+    auto rob_pos = KukaUtils::E6POS(msg);
+    std::cout << ">>> Robot TCP Position:" << std::endl
+              << ((Eigen::Isometry3d)rob_pos).matrix() << std::endl;
+
+    auto tf = camera.getCameraTransform();
+    auto marker_tf = markerDetection::phoxi2eigen(tf);
+    std::cout << ">>> Camera Position in Marker Coordinate Space:" << std::endl
+              << marker_tf.matrix() << std::endl;
+
+    cam2board.push_back(marker_tf);
     rob2world.push_back(rob_pos);
   };
 

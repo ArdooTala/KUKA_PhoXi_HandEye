@@ -1,5 +1,4 @@
 #include "marker_detector.h"
-#include <iostream>
 
 namespace markerDetection {
 PhoXiCam::PhoXiCam(std::string id) : hwId(id) {

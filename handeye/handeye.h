@@ -5,8 +5,8 @@
 
 namespace HandEye {
 
-Eigen::Transform<double, 3, 1>
-calibrate_hand_eye(std::vector<Eigen::Transform<double, 3, 1>>& cam,
-                   std::vector<Eigen::Transform<double, 3, 1>>& rob);
+Eigen::Isometry3d
+calibrate_hand_eye(std::vector<Eigen::Isometry3d>& cam,
+                   std::vector<Eigen::Isometry3d>& rob);
 
 } // namespace HandEye
