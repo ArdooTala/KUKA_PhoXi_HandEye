@@ -8,20 +8,56 @@
 
 #define PORT 59153
 
-std::vector<Eigen::Isometry3d> rob2world;
-std::vector<Eigen::Isometry3d> cam2board;
+  // std::vector<Eigen::Isometry3d> rob2world;
+  // std::vector<Eigen::Isometry3d> cam2board;
+  //
+  // markerDetection::PhoXiCam camera("PAD-104");
+
+// void write2array(std::string msg) {
+//     std::cout << "Callbacking...!!" << std::endl;
+//     std::cout << msg << std::endl;
+//
+//     try {
+//       camera.trigger();
+//     } catch (...) {
+//       std::cerr << "Capture failed!" << std::endl;
+//       return;
+//     }
+//
+//     auto rob_pos = KukaUtils::E6POS(msg);
+//     std::cout << ">>> Robot TCP Position:" << std::endl
+//               << ((Eigen::Isometry3d)rob_pos).matrix() << std::endl;
+//
+//     auto tf = camera.getCameraTransform();
+//     auto marker_tf = markerDetection::phoxi2eigen(tf);
+//     std::cout << ">>> Camera Position in Marker Coordinate Space:" << std::endl
+//               << marker_tf.matrix() << std::endl;
+//
+//     rob2world.push_back(rob_pos);
+//     // rob2world.push_back(rob_pos.tf().inverse());
+//     cam2board.push_back(marker_tf);
+//     // cam2board.push_back(marker_tf.inverse());
+// }
 
 int main() {
-  std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
-  rob2world.reserve(20);
-  cam2board.reserve(20);
+  std::vector<Eigen::Isometry3d> rob2world;
+  std::vector<Eigen::Isometry3d> cam2board;
 
   markerDetection::PhoXiCam camera("PAD-104");
+
+
+
+
+  std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
+  rob2world.reserve(6);
+  cam2board.reserve(6);
+
   camera.initDevice();
 
   TcpServer server(PORT);
-  server.msgCallback = [&camera](std::string msg) {
+  server.msgCallback = [&camera, &rob2world, &cam2board](std::string msg) {
     std::cout << "Callbacking...!!" << std::endl;
+    std::cout << msg << std::endl;
 
     try {
       camera.trigger();
@@ -39,8 +75,11 @@ int main() {
     std::cout << ">>> Camera Position in Marker Coordinate Space:" << std::endl
               << marker_tf.matrix() << std::endl;
 
-    cam2board.push_back(marker_tf);
     rob2world.push_back(rob_pos);
+    // rob2world.push_back(rob_pos.tf().inverse());
+    cam2board.push_back(marker_tf);
+    // cam2board.push_back(marker_tf.inverse());
+
   };
 
   if (!server.start()) {
@@ -61,6 +100,9 @@ int main() {
   while (!server.receiveMessage().empty()) {
     server.sendMessage("<BasicRecv><Flag12></Flag12></BasicRecv>");
   }
+
+  auto res = HandEye::calibrate_hand_eye(cam2board, rob2world);
+  std::cout << ">>> RESULT <<<" << std::endl << res.matrix() << std::endl;
 
   return 0;
 }

@@ -23,12 +23,14 @@ Eigen::Vector3d E6POS::t() const { return Eigen::Vector3d(x, y, z); }
 
 Eigen::Matrix3d E6POS::r() const { return abc2matrix3d(a, b, c); }
 
-E6POS::operator Eigen::Isometry3d() const {
+Eigen::Isometry3d E6POS::tf() const {
   Eigen::Isometry3d tf;
   tf.linear() = r();
   tf.translation() = t();
   return tf;
 }
+
+E6POS::operator Eigen::Isometry3d() const { return tf(); }
 
 Eigen::Matrix3d E6POS::abc2matrix3d(double a, double b, double c) const {
   Eigen::Quaterniond q =

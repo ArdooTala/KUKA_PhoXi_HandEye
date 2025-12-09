@@ -14,6 +14,7 @@ struct E6POS {
 
     Eigen::Vector3d t() const;
     Eigen::Matrix3d r() const;
+    Eigen::Isometry3d tf() const;
     operator Eigen::Isometry3d() const;
 
 private:
