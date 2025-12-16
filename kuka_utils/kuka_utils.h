@@ -21,4 +21,17 @@ private:
     Eigen::Matrix3d abc2matrix3d(double a, double b, double c) const;
 };
 
+
+struct EKI_MSG {
+    pugi::xml_document doc;
+    pugi::xml_node root;
+    EKI_MSG();
+
+    void eki_add_flag ();
+    void eki_add_frame (Eigen::Isometry3d frame);
+    void eki_add_message (const std::string& msg);
+
+    std::string get_string();
+};
+
 } // namespace KukaUtils

@@ -17,8 +17,6 @@ int main() {
     return -1;
   }
 
-  server.msgCallback = handleXmlMessage;
-
   if (server.acceptClient() < 0) {
     std::cerr << "Failed to accept client." << std::endl;
     server.stop();

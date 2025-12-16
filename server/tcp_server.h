@@ -67,8 +67,6 @@ public:
    */
   std::string getClientIp();
 
-  std::function<void(const std::string &)> msgCallback;
-
 private:
   int port;        // Port number for the server
   int server_fd;   // Server's listening socket file descriptor

@@ -114,10 +114,6 @@ std::string TcpServer::receiveMessage(int buffer_size) {
   std::string received_data(buffer);
   delete[] buffer; // Free the dynamically allocated buffer
 
-  if (msgCallback) {
-    msgCallback(received_data);
-  }
-
   return received_data;
 }
 

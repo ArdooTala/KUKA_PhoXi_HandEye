@@ -8,79 +8,31 @@
 
 #define PORT 59153
 
-  // std::vector<Eigen::Isometry3d> rob2world;
-  // std::vector<Eigen::Isometry3d> cam2board;
-  //
-  // markerDetection::PhoXiCam camera("PAD-104");
+int main(int argc, char *argv[]) {
+  std::string hwId;
 
-// void write2array(std::string msg) {
-//     std::cout << "Callbacking...!!" << std::endl;
-//     std::cout << msg << std::endl;
-//
-//     try {
-//       camera.trigger();
-//     } catch (...) {
-//       std::cerr << "Capture failed!" << std::endl;
-//       return;
-//     }
-//
-//     auto rob_pos = KukaUtils::E6POS(msg);
-//     std::cout << ">>> Robot TCP Position:" << std::endl
-//               << ((Eigen::Isometry3d)rob_pos).matrix() << std::endl;
-//
-//     auto tf = camera.getCameraTransform();
-//     auto marker_tf = markerDetection::phoxi2eigen(tf);
-//     std::cout << ">>> Camera Position in Marker Coordinate Space:" << std::endl
-//               << marker_tf.matrix() << std::endl;
-//
-//     rob2world.push_back(rob_pos);
-//     // rob2world.push_back(rob_pos.tf().inverse());
-//     cam2board.push_back(marker_tf);
-//     // cam2board.push_back(marker_tf.inverse());
-// }
+  if (argc > 1) {
+    std::cout << "Connection HWID: " << argv[1] << std::endl;
+    hwId = argv[1];
 
-int main() {
+    if (hwId.empty()) {
+      std::cout << "Error reading the HardwareID" << std::endl;
+      return 1;
+    }
+  } else {
+    hwId = "PAD-104";
+  }
+  std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
+
   std::vector<Eigen::Isometry3d> rob2world;
   std::vector<Eigen::Isometry3d> cam2board;
-
-  markerDetection::PhoXiCam camera("PAD-104");
-
-
-
-
-  std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
   rob2world.reserve(6);
   cam2board.reserve(6);
 
+  markerDetection::PhoXiCam camera(hwId);
   camera.initDevice();
 
   TcpServer server(PORT);
-  server.msgCallback = [&camera, &rob2world, &cam2board](std::string msg) {
-    std::cout << "Callbacking...!!" << std::endl;
-    std::cout << msg << std::endl;
-
-    try {
-      camera.trigger();
-    } catch (...) {
-      std::cerr << "Capture failed!" << std::endl;
-      return;
-    }
-
-    auto rob_pos = KukaUtils::E6POS(msg);
-    std::cout << ">>> Robot TCP Position:" << std::endl
-              << ((Eigen::Isometry3d)rob_pos).matrix() << std::endl;
-
-    auto tf = camera.getCameraTransform();
-    auto marker_tf = markerDetection::phoxi2eigen(tf);
-    std::cout << ">>> Camera Position in Marker Coordinate Space:" << std::endl
-              << marker_tf.matrix() << std::endl;
-
-    rob2world.push_back(rob_pos);
-    // rob2world.push_back(rob_pos.tf().inverse());
-    cam2board.push_back(marker_tf);
-    // cam2board.push_back(marker_tf.inverse());
-
-  };
 
   if (!server.start()) {
     std::cerr << "Failed to start the server" << std::endl;
@@ -97,12 +49,52 @@ int main() {
   std::cout << "Client connected!" << std::endl;
   std::cout << "Client IP: " << server.getClientIp() << std::endl;
 
-  while (!server.receiveMessage().empty()) {
+  std::string msg;
+  while (!(msg = server.receiveMessage()).empty()) {
+    std::cout << msg << std::endl;
+
+    if (msg.find("<Position") == std::string::npos)
+      break;
+    auto rob_pos = KukaUtils::E6POS(msg);
+    std::cout << ">>> Robot TCP Position:" << std::endl
+              << ((Eigen::Isometry3d)rob_pos).matrix() << std::endl;
+
+    try {
+      camera.trigger();
+    } catch (...) {
+      std::cerr << "Capture failed!" << std::endl;
+      continue;
+    }
+
+    auto tf = camera.getCameraTransform();
+    auto marker_tf = markerDetection::phoxi2eigen(tf);
+    std::cout << ">>> Camera Position in Marker Coordinate Space:" << std::endl
+              << marker_tf.matrix() << std::endl;
+
+    rob2world.push_back(rob_pos);
+    // rob2world.push_back(rob_pos.tf().inverse());
+    // cam2board.push_back(marker_tf);
+    cam2board.push_back(marker_tf.inverse());
+
     server.sendMessage("<BasicRecv><Flag12></Flag12></BasicRecv>");
   }
 
-  auto res = HandEye::calibrate_hand_eye(cam2board, rob2world);
+  auto he = HandEye::HandEye(cam2board, rob2world);
+
+  auto res = he.calculate_handeye();
   std::cout << ">>> RESULT <<<" << std::endl << res.matrix() << std::endl;
+
+  if (msg.find("<Tool") != std::string::npos) {
+    std::cout << "Sending Tool Data" << std::endl;
+    KukaUtils::EKI_MSG eki_msg;
+    eki_msg.eki_add_message("MotionCam_M");
+    eki_msg.eki_add_frame(res);
+
+    server.sendMessage(eki_msg.get_string());
+  }
+
+  while (!server.receiveMessage().empty())
+    ;
 
   return 0;
 }
