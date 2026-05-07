@@ -10,6 +10,8 @@ add_subdirectory(detector)
 add_subdirectory(kuka_utils)
 add_subdirectory(handeye)
 
+find_package(PCL REQUIRED)
+
 add_executable(HandEyeCalibration)
 
 target_sources(HandEyeCalibration
@@ -23,4 +25,19 @@ target_link_libraries(HandEyeCalibration
         marker_detector_lib
         KukaUtils
         handeye_lib
+)
+
+add_executable(PointCloudCapture)
+
+target_sources(PointCloudCapture
+    PRIVATE
+        PointCloudCapture.cpp
+)
+
+target_link_libraries(PointCloudCapture
+    PUBLIC
+        tcp_server_lib
+        marker_detector_lib
+        KukaUtils
+        ${PCL_LIBRARIES}
 )
