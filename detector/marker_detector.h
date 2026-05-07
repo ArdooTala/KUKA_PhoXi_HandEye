@@ -10,13 +10,13 @@ class PhoXiCam {
 public:
   PhoXiCam(std::string id);
   ~PhoXiCam();
-  void initDevice();
-  void trigger();
-  pho::api::PhoXiCoordinateTransformation getCameraTransform();
-  void saveFrame();
+  void InitDevice(bool calibration = true);
+  void Trigger();
+  pho::api::PhoXiCoordinateTransformation GetCameraTransform();
+  void SaveFrame();
 
 private:
-  bool connect();
+  bool Connect();
 
 private:
   std::string hwId;
@@ -27,6 +27,6 @@ private:
   pho::api::PhoXiCoordinateTransformation cameraPosition;
 };
 
-Eigen::Isometry3d phoxi2eigen (pho::api::PhoXiCoordinateTransformation& phoxi_tf) ;
+Eigen::Isometry3d Phoxi2Eigen (pho::api::PhoXiCoordinateTransformation& phoxi_tf) ;
 
 } // namespace markerDetection

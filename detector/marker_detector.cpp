@@ -33,7 +33,7 @@ PhoXiCam::~PhoXiCam() {
   }
 }
 
-bool PhoXiCam::connect() {
+bool PhoXiCam::Connect() {
   // Try to connect device opened in PhoXi Control, if any
   device = factory.CreateAndConnectFirstAttached();
   if (device)
@@ -57,8 +57,8 @@ bool PhoXiCam::connect() {
   return 1;
 }
 
-void PhoXiCam::initDevice() {
-  if (!connect()) {
+void PhoXiCam::InitDevice(bool calibration) {
+  if (!Connect()) {
     std::cerr << "Could not connect to the device!" << std::endl;
     return;
   }
@@ -86,8 +86,9 @@ void PhoXiCam::initDevice() {
   device->CoordinatesSettings->CameraSpace =
       pho::api::PhoXiCameraSpace::PrimaryCamera;
   device->CoordinatesSettings->CoordinateSpace =
-      pho::api::PhoXiCoordinateSpace::MarkerSpace;
-  device->CoordinatesSettings->RecognizeMarkers = true;
+      calibration ? pho::api::PhoXiCoordinateSpace::MarkerSpace
+                  : pho::api::PhoXiCoordinateSpace::CameraSpace;
+  device->CoordinatesSettings->RecognizeMarkers = calibration;
 
   if (device->IsRecording()) {
     device->StopRecording();
@@ -132,7 +133,7 @@ void PhoXiCam::initDevice() {
   std::cout << "Device config is set for calibration." << std::endl;
 }
 
-void PhoXiCam::trigger() {
+void PhoXiCam::Trigger() {
   if (!device || !device->isConnected())
     throw std::runtime_error("Device not connected");
 
@@ -191,7 +192,7 @@ void PhoXiCam::trigger() {
   }
 }
 
-pho::api::PhoXiCoordinateTransformation PhoXiCam::getCameraTransform() {
+pho::api::PhoXiCoordinateTransformation PhoXiCam::GetCameraTransform() {
   cameraPosition.Rotation[0][0] = (double)(frame->Info.CurrentCameraXAxis.x);
   cameraPosition.Rotation[1][0] = (double)(frame->Info.CurrentCameraXAxis.y);
   cameraPosition.Rotation[2][0] = (double)(frame->Info.CurrentCameraXAxis.z);
@@ -209,10 +210,10 @@ pho::api::PhoXiCoordinateTransformation PhoXiCam::getCameraTransform() {
   return cameraPosition;
 }
 
-void PhoXiCam::saveFrame() {}
+void PhoXiCam::SaveFrame() {}
 
 Eigen::Isometry3d
-phoxi2eigen(pho::api::PhoXiCoordinateTransformation &phoxi_tf) {
+Phoxi2Eigen(pho::api::PhoXiCoordinateTransformation &phoxi_tf) {
   Eigen::Isometry3d eigen_tf;
 
   eigen_tf.linear()(0, 0) = phoxi_tf.Rotation[0][0];
@@ -227,9 +228,8 @@ phoxi2eigen(pho::api::PhoXiCoordinateTransformation &phoxi_tf) {
   eigen_tf.linear()(2, 1) = phoxi_tf.Rotation[2][1];
   eigen_tf.linear()(2, 2) = phoxi_tf.Rotation[2][2];
 
-  eigen_tf.translation() << phoxi_tf.Translation.x,
-                            phoxi_tf.Translation.y,
-                            phoxi_tf.Translation.z;
+  eigen_tf.translation() << phoxi_tf.Translation.x, phoxi_tf.Translation.y,
+      phoxi_tf.Translation.z;
 
   return eigen_tf;
 }

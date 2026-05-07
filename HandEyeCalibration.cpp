@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   cam2board.reserve(6);
 
   markerDetection::PhoXiCam camera(hwId);
-  camera.initDevice();
+  camera.InitDevice(true);
 
   TcpServer server(PORT);
 
@@ -60,20 +60,19 @@ int main(int argc, char *argv[]) {
               << ((Eigen::Isometry3d)rob_pos).matrix() << std::endl;
 
     try {
-      camera.trigger();
+      camera.Trigger();
     } catch (...) {
-      std::cerr << "Capture failed!" << std::endl;
+      std::cerr << "Capture failed!...Or, the marker was not detected!!" << std::endl;
+      server.sendMessage("<BasicRecv><Flag12></Flag12></BasicRecv>");
       continue;
     }
 
-    auto tf = camera.getCameraTransform();
-    auto marker_tf = markerDetection::phoxi2eigen(tf);
+    auto tf = camera.GetCameraTransform();
+    auto marker_tf = markerDetection::Phoxi2Eigen(tf);
     std::cout << ">>> Camera Position in Marker Coordinate Space:" << std::endl
               << marker_tf.matrix() << std::endl;
 
     rob2world.push_back(rob_pos);
-    // rob2world.push_back(rob_pos.tf().inverse());
-    // cam2board.push_back(marker_tf);
     cam2board.push_back(marker_tf.inverse());
 
     server.sendMessage("<BasicRecv><Flag12></Flag12></BasicRecv>");
