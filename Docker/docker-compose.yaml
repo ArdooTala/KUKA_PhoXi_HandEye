@@ -1,0 +1,10 @@
+services:
+  kuka_phoxi:
+    build: .
+    network_mode: host
+    privileged: true
+    restart: always
+    tty: true
+    stdin_open: true
+    volumes:
+      - ..:/root/src
