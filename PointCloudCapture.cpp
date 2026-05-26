@@ -11,8 +11,15 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <string>
+#include <vector>
 
-#define PORT 59153
+void printUsage(const char* progName) {
+    std::cout << "Usage: " << progName << " [options] [hardware_id]" << std::endl;
+    std::cout << "Options:" << std::endl;
+    std::cout << "  -i, --hw-id <id>    Set the Scanner's Hardware ID: <PAD-104>" << std::endl;
+    std::cout << "  -p, --port <port>   Set the TCP port: <59153>" << std::endl;
+    std::cout << "  -h, --help          Show this help message" << std::endl;
+}
 
 pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr
 convertToPCL(const pho::api::PFrame &Frame) {
@@ -27,25 +34,43 @@ convertToPCL(const pho::api::PFrame &Frame) {
 }
 
 int main(int argc, char *argv[]) {
-  std::string hwId;
+  std::string hwId = "PAD-104";
+  int port = 59153;
 
-  if (argc > 1) {
-    std::cout << "Connection HWID: " << argv[1] << std::endl;
-    hwId = argv[1];
-
-    if (hwId.empty()) {
-      std::cout << "Error reading the HardwareID" << std::endl;
-      return 1;
+  for (int i = 1; i < argc; ++i) {
+    std::string arg = argv[i];
+    if (arg == "-h" || arg == "--help") {
+      printUsage(argv[0]);
+      return 0;
+    } else if (arg == "-p" || arg == "--port") {
+      if (i + 1 < argc) {
+        port = std::stoi(argv[++i]);
+      } else {
+        std::cerr << "Error: " << arg << " requires a port number" << std::endl;
+        return 1;
+      }
+    } else if (arg == "-i" || arg == "--hw-id") {
+      if (i + 1 < argc) {
+        hwId = argv[++i];
+      } else {
+        std::cerr << "Error: " << arg << " requires a hardware ID" << std::endl;
+        return 1;
+      }
+    } else {
+      // Assuming remaining arguments are positional HWID for backward compatibility
+      hwId = arg;
     }
-  } else {
-    hwId = "PAD-104";
   }
+
+  std::cout << "Connection HWID: " << hwId << std::endl;
+  std::cout << "Connection Port: " << port << std::endl;
+
   std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
 
   markerDetection::PhoXiCam camera(hwId);
   camera.InitDevice(false);
 
-  TcpServer server(PORT);
+  TcpServer server(port);
 
   if (!server.start()) {
     std::cerr << "Failed to start the server" << std::endl;
