@@ -1,4 +1,5 @@
 #include "marker_detector.h"
+#include "phoxi/PhoXiFrameDataType.h"
 
 namespace markerDetection {
 PhoXiCam::PhoXiCam(std::string id) : hwId(id) {
@@ -104,7 +105,7 @@ void PhoXiCam::InitDevice(bool calibration) {
         "overwrite_existing": true,
         "containers": {
             "ply": {
-                "enabled": true,
+                "enabled": false,
                 "point_cloud": true,
                 "depth_map": true,
                 "texture": true
@@ -133,7 +134,7 @@ void PhoXiCam::InitDevice(bool calibration) {
   std::cout << "Device config is set for calibration." << std::endl;
 }
 
-void PhoXiCam::Trigger() {
+pho::api::PFrame PhoXiCam::Trigger() {
   if (!device || !device->isConnected())
     throw std::runtime_error("Device not connected");
 
@@ -190,6 +191,8 @@ void PhoXiCam::Trigger() {
   if (frame->Texture.Empty()) {
     throw std::runtime_error("Frame Texture is empty");
   }
+
+    return frame;
 }
 
 pho::api::PhoXiCoordinateTransformation PhoXiCam::GetCameraTransform() {

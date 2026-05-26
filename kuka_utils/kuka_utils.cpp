@@ -31,6 +31,7 @@ Eigen::Isometry3d E6POS::tf() const {
 }
 
 E6POS::operator Eigen::Isometry3d() const { return tf(); }
+E6POS::operator Eigen::Isometry3f() const { return tf().cast<float>(); }
 
 Eigen::Matrix3d E6POS::abc2matrix3d(double a, double b, double c) const {
   Eigen::Quaterniond q =
@@ -61,9 +62,9 @@ void EKI_MSG::eki_add_frame (Eigen::Isometry3d frame) {
     node.append_attribute("X") = t[0];
     node.append_attribute("Y") = t[1];
     node.append_attribute("Z") = t[2];
-    node.append_attribute("A") = r[0];
-    node.append_attribute("B") = r[1];
-    node.append_attribute("C") = r[2];
+    node.append_attribute("A") = r[0] * RAD2DEG;
+    node.append_attribute("B") = r[1] * RAD2DEG;
+    node.append_attribute("C") = r[2] * RAD2DEG;
 }
 
 std::string EKI_MSG::get_string() {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <PhoXi.h>
 #include <Eigen/Geometry>
+#include <PhoXi.h>
 #include <string>
 
 namespace markerDetection {
@@ -11,7 +11,7 @@ public:
   PhoXiCam(std::string id);
   ~PhoXiCam();
   void InitDevice(bool calibration = true);
-  void Trigger();
+  pho::api::PFrame Trigger();
   pho::api::PhoXiCoordinateTransformation GetCameraTransform();
   void SaveFrame();
 
@@ -27,6 +27,7 @@ private:
   pho::api::PhoXiCoordinateTransformation cameraPosition;
 };
 
-Eigen::Isometry3d Phoxi2Eigen (pho::api::PhoXiCoordinateTransformation& phoxi_tf) ;
+Eigen::Isometry3d
+Phoxi2Eigen(pho::api::PhoXiCoordinateTransformation &phoxi_tf);
 
 } // namespace markerDetection

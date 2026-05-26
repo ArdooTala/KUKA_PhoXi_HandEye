@@ -1,28 +1,29 @@
 #define PHOXI_PCL_SUPPORT
-#include "PhoXi.h"
 
+#include "PhoXi.h"
 #include "detector/marker_detector.h"
 #include "kuka_utils/kuka_utils.h"
 #include "pugixml.hpp"
 #include "server/tcp_server.h"
 #include <iostream>
-#include <pcl/io/pcd_io.h>
+#include <pcl/common/transforms.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <string>
 
 #define PORT 59153
 
-void convertToPCL(const pho::api::PFrame &Frame) {
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr
+convertToPCL(const pho::api::PFrame &Frame) {
   std::cout << "Frame " << Frame << "\n";
-  pho::api::PhoXiTimeout timeout;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr PCLCloud(
-      new pcl::PointCloud<pcl::PointXYZ>());
 
-  pcl::PointCloud<pcl::PointXYZRGBNormal> MyPCLCloud;
-  Frame->ConvertTo(MyPCLCloud);
+  pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr PCLCloud(
+      new pcl::PointCloud<pcl::PointXYZRGBNormal>());
+  Frame->ConvertTo(*PCLCloud);
 
-  std::cout << "Number of points in PCL Cloud : " << MyPCLCloud.points.size()
-            << std::endl;
+  std::cout << PCLCloud->points.size() << " points in the PCL Cloud : " << std::endl;
+  return PCLCloud;
 }
 
 int main(int argc, char *argv[]) {
@@ -41,13 +42,8 @@ int main(int argc, char *argv[]) {
   }
   std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
 
-  std::vector<Eigen::Isometry3d> rob2world;
-  std::vector<Eigen::Isometry3d> cam2board;
-  rob2world.reserve(6);
-  cam2board.reserve(6);
-
   markerDetection::PhoXiCam camera(hwId);
-  camera.InitDevice(true);
+  camera.InitDevice(false);
 
   TcpServer server(PORT);
 
@@ -67,25 +63,35 @@ int main(int argc, char *argv[]) {
   std::cout << "Client IP: " << server.getClientIp() << std::endl;
 
   std::string msg;
+  int index = 0;
   while (!(msg = server.receiveMessage()).empty()) {
     std::cout << msg << std::endl;
 
     if (msg.find("<Position") == std::string::npos)
       break;
     auto rob_pos = KukaUtils::E6POS(msg);
-    std::cout << ">>> Robot TCP Position:" << std::endl
-              << ((Eigen::Isometry3d)rob_pos).matrix() << std::endl;
+    auto rob_transform = (Eigen::Isometry3f)rob_pos;
 
+    std::cout << ">>> Robot TCP Position:" << std::endl
+              << rob_transform.matrix() << std::endl;
+
+    pho::api::PFrame frame;
     try {
-      camera.Trigger();
+      frame = camera.Trigger();
     } catch (...) {
-      std::cerr << "Capture failed!...Or, the marker was not detected!!"
-                << std::endl;
-      server.sendMessage("<BasicRecv><Flag12></Flag12></BasicRecv>");
-      continue;
+      std::cerr << "Capture failed!..." << std::endl;
     }
 
     server.sendMessage("<BasicRecv><Flag12></Flag12></BasicRecv>");
+
+    auto source_cloud = convertToPCL(frame);
+    pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr transformed_cloud(
+        new pcl::PointCloud<pcl::PointXYZRGBNormal>());
+    pcl::transformPointCloud(*source_cloud, *transformed_cloud, rob_transform);
+
+    std::string file_name = "/home/ardeshir/Desktop/TestCaptures/capture_" + std::to_string(index) + ".ply";
+    pcl::io::savePLYFile(file_name, *transformed_cloud);
+    index++;
   }
 
   while (!server.receiveMessage().empty())
