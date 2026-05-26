@@ -1,20 +1,34 @@
 #include "tcp_server.h"
-#include <arpa/inet.h> // For inet_ntop()
-#include <cstring>     // For memset, strlen
+#include <cstring>
 #include <iostream>
-#include <netinet/in.h> // For sockaddr_in, INADDR_ANY
 #include <string>
-#include <sys/socket.h> // For socket(), bind(), listen(), accept()
-#include <unistd.h>     // For close(), read()
+
+#ifdef _WIN32
+#define close closesocket
+#else
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#endif
 
 TcpServer::TcpServer(int port)
     : port(port), server_fd(-1), is_running(false), client_socket(0),
-      client_address() {}
+      client_address() {
+#ifdef _WIN32
+  WSADATA wsaData;
+  if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+    std::cerr << "WSAStartup failed." << std::endl;
+  }
+#endif
+}
 
 TcpServer::~TcpServer() {
   if (is_running) {
     stop();
   }
+#ifdef _WIN32
+  WSACleanup();
+#endif
 }
 
 bool TcpServer::start() {
@@ -22,14 +36,18 @@ bool TcpServer::start() {
   int opt = 1;
 
   // 1. Create a socket file descriptor
-  if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+  if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
     std::cerr << "Socket creation failed" << std::endl;
     return false;
   }
 
-  // 2. Set socket options (SO_REUSEADDR)
+#ifdef _WIN32
+  if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (const char *)&opt,
+                 sizeof(opt)) == SOCKET_ERROR) {
+#else
   if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,
-                 sizeof(opt))) {
+                 sizeof(opt)) < 0) {
+#endif
     std::cerr << "setsockopt failed" << std::endl;
     close(server_fd);
     return false;
@@ -41,14 +59,15 @@ bool TcpServer::start() {
   address.sin_port = htons(port);       // Use the port from the constructor
 
   // 4. Bind the socket to the address and port
-  if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+  if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) ==
+      SOCKET_ERROR) {
     std::cerr << "Bind failed" << std::endl;
     close(server_fd);
     return false;
   }
 
   // 5. Listen for incoming connections
-  if (listen(server_fd, 1) < 0) { // 3 is the backlog queue size
+  if (listen(server_fd, 1) == SOCKET_ERROR) {
     std::cerr << "Listen failed" << std::endl;
     close(server_fd);
     return false;
@@ -59,33 +78,32 @@ bool TcpServer::start() {
   return true;
 }
 
-// --- acceptClient() Method ---
-// Waits for and accepts a new client connection.
-// This is a blocking call.
-// Returns the new client's socket file descriptor, or -1 on failure.
-int TcpServer::acceptClient() {
-  int new_socket;
+bool TcpServer::acceptClient() {
+  SOCKET new_socket;
   int addrlen = sizeof(client_address);
 
   // 6. Wait for and accept a client connection
+#ifdef _WIN32
+  new_socket = accept(server_fd, (struct sockaddr *)&client_address, &addrlen);
+#else
   new_socket = accept(server_fd, (struct sockaddr *)&client_address,
                       (socklen_t *)&addrlen);
+#endif
 
-  if (new_socket < 0) {
-    // Only print an error if the server is supposed to be running
+  if (new_socket == INVALID_SOCKET) {
     if (is_running) {
       std::cerr << "Accept failed" << std::endl;
     }
-    return -1;
+    return false;
   }
 
   client_socket = new_socket;
-
-  return new_socket;
+  return true;
 }
 
 bool TcpServer::sendMessage(const std::string &message) {
-  if (send(client_socket, message.c_str(), message.length(), 0) < 0) {
+  if (send(client_socket, message.c_str(), message.length(), 0) ==
+      SOCKET_ERROR) {
     std::cerr << "Failed to send message" << std::endl;
     return false;
   }
@@ -93,11 +111,10 @@ bool TcpServer::sendMessage(const std::string &message) {
 }
 
 std::string TcpServer::receiveMessage(int buffer_size) {
-  // Create a buffer to hold the incoming data
   char *buffer = new char[buffer_size];
   std::memset(buffer, 0, buffer_size); // Clear the buffer
 
-  int bytes_read = read(client_socket, buffer, buffer_size - 1);
+  int bytes_read = recv(client_socket, buffer, buffer_size - 1, 0);
 
   if (bytes_read < 0) {
     std::cerr << "Read failed" << std::endl;
@@ -110,23 +127,21 @@ std::string TcpServer::receiveMessage(int buffer_size) {
     return ""; // Client closed the connection
   }
 
-  // Convert the C-style char buffer to a C++ string
   std::string received_data(buffer);
-  delete[] buffer; // Free the dynamically allocated buffer
-
+  delete[] buffer;
   return received_data;
 }
 
 void TcpServer::stop() {
-  if (client_socket) {
+  if (client_socket != INVALID_SOCKET) {
     close(client_socket);
-    client_socket = -1;
+    client_socket = INVALID_SOCKET;
   }
-  if (is_running) {
-    close(server_fd);
-    server_fd = -1;
-    is_running = false;
+  if (is_running && server_fd != INVALID_SOCKET) {
     std::cout << "Server shutting down." << std::endl;
+    close(server_fd);
+    server_fd = INVALID_SOCKET;
+    is_running = false;
   }
 }
 

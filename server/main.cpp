@@ -17,7 +17,7 @@ int main() {
     return -1;
   }
 
-  if (server.acceptClient() < 0) {
+  if (!server.acceptClient()) {
     std::cerr << "Failed to accept client." << std::endl;
     server.stop();
     return -1;
