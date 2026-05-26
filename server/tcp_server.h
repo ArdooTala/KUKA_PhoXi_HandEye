@@ -1,16 +1,7 @@
 #pragma once
 
 #include <string>
-
-#ifdef _WIN32
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#else
-#include <netinet/in.h>
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-typedef int SOCKET;
-#endif
+#include <asio.hpp>
 
 class TcpServer {
 public:
@@ -32,9 +23,8 @@ public:
 
 private:
   int port;
-  SOCKET server_fd;
+  asio::io_context io_context;
+  asio::ip::tcp::acceptor acceptor;
+  asio::ip::tcp::socket socket;
   bool is_running;
-
-  SOCKET client_socket;
-  struct sockaddr_in client_address;
 };

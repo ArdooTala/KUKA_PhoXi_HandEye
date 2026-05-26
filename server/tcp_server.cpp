@@ -1,152 +1,85 @@
 #include "tcp_server.h"
-#include <cstring>
 #include <iostream>
-#include <string>
-
-#ifdef _WIN32
-#define close closesocket
-#else
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#endif
+#include <vector>
 
 TcpServer::TcpServer(int port)
-    : port(port), server_fd(-1), is_running(false), client_socket(0),
-      client_address() {
-#ifdef _WIN32
-  WSADATA wsaData;
-  if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-    std::cerr << "WSAStartup failed." << std::endl;
-  }
-#endif
-}
+    : port(port), io_context(), acceptor(io_context), socket(io_context),
+      is_running(false) {}
 
-TcpServer::~TcpServer() {
-  if (is_running) {
-    stop();
-  }
-#ifdef _WIN32
-  WSACleanup();
-#endif
-}
+TcpServer::~TcpServer() { stop(); }
 
 bool TcpServer::start() {
-  struct sockaddr_in address;
-  int opt = 1;
+  try {
+    asio::ip::tcp::endpoint endpoint(asio::ip::tcp::v4(), port);
+    acceptor.open(endpoint.protocol());
+    acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
+    acceptor.bind(endpoint);
+    acceptor.listen();
 
-  // 1. Create a socket file descriptor
-  if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
-    std::cerr << "Socket creation failed" << std::endl;
+    std::cout << "Server listening on port " << port << "..." << std::endl;
+    is_running = true;
+    return true;
+  } catch (const std::exception &e) {
+    std::cerr << "Start failed: " << e.what() << std::endl;
     return false;
   }
-
-#ifdef _WIN32
-  if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (const char *)&opt,
-                 sizeof(opt)) == SOCKET_ERROR) {
-#else
-  if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,
-                 sizeof(opt)) < 0) {
-#endif
-    std::cerr << "setsockopt failed" << std::endl;
-    close(server_fd);
-    return false;
-  }
-
-  // 3. Define the server address structure
-  address.sin_family = AF_INET;
-  address.sin_addr.s_addr = INADDR_ANY; // Listen on all interfaces
-  address.sin_port = htons(port);       // Use the port from the constructor
-
-  // 4. Bind the socket to the address and port
-  if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) ==
-      SOCKET_ERROR) {
-    std::cerr << "Bind failed" << std::endl;
-    close(server_fd);
-    return false;
-  }
-
-  // 5. Listen for incoming connections
-  if (listen(server_fd, 1) == SOCKET_ERROR) {
-    std::cerr << "Listen failed" << std::endl;
-    close(server_fd);
-    return false;
-  }
-
-  std::cout << "Server listening on port " << port << "..." << std::endl;
-  is_running = true;
-  return true;
 }
 
 bool TcpServer::acceptClient() {
-  SOCKET new_socket;
-  int addrlen = sizeof(client_address);
-
-  // 6. Wait for and accept a client connection
-#ifdef _WIN32
-  new_socket = accept(server_fd, (struct sockaddr *)&client_address, &addrlen);
-#else
-  new_socket = accept(server_fd, (struct sockaddr *)&client_address,
-                      (socklen_t *)&addrlen);
-#endif
-
-  if (new_socket == INVALID_SOCKET) {
+  try {
+    acceptor.accept(socket);
+    return true;
+  } catch (const std::exception &e) {
     if (is_running) {
-      std::cerr << "Accept failed" << std::endl;
+      std::cerr << "Accept failed: " << e.what() << std::endl;
     }
     return false;
   }
-
-  client_socket = new_socket;
-  return true;
 }
 
 bool TcpServer::sendMessage(const std::string &message) {
-  if (send(client_socket, message.c_str(), message.length(), 0) ==
-      SOCKET_ERROR) {
-    std::cerr << "Failed to send message" << std::endl;
+  try {
+    asio::write(socket, asio::buffer(message));
+    return true;
+  } catch (const std::exception &e) {
+    std::cerr << "Failed to send message: " << e.what() << std::endl;
     return false;
   }
-  return true;
 }
 
 std::string TcpServer::receiveMessage(int buffer_size) {
-  char *buffer = new char[buffer_size];
-  std::memset(buffer, 0, buffer_size); // Clear the buffer
+  try {
+    std::vector<char> buffer(buffer_size);
+    asio::error_code error;
+    size_t length = socket.receive(asio::buffer(buffer), 0, error);
 
-  int bytes_read = recv(client_socket, buffer, buffer_size - 1, 0);
+    if (error == asio::error::eof) {
+      std::cout << "Client disconnected" << std::endl;
+      stop();
+      return "";
+    } else if (error) {
+      throw asio::system_error(error);
+    }
 
-  if (bytes_read < 0) {
-    std::cerr << "Read failed" << std::endl;
-    delete[] buffer;
+    return std::string(buffer.data(), length);
+  } catch (const std::exception &e) {
+    std::cerr << "Read failed: " << e.what() << std::endl;
     return "";
-  } else if (bytes_read == 0) {
-    std::cout << "Client disconnected" << std::endl;
-    delete[] buffer;
-    stop();
-    return ""; // Client closed the connection
   }
-
-  std::string received_data(buffer);
-  delete[] buffer;
-  return received_data;
 }
 
 void TcpServer::stop() {
-  if (client_socket != INVALID_SOCKET) {
-    close(client_socket);
-    client_socket = INVALID_SOCKET;
-  }
-  if (is_running && server_fd != INVALID_SOCKET) {
-    std::cout << "Server shutting down." << std::endl;
-    close(server_fd);
-    server_fd = INVALID_SOCKET;
-    is_running = false;
-  }
+  is_running = false;
+  asio::error_code ec;
+  socket.shutdown(asio::ip::tcp::socket::shutdown_both, ec);
+  socket.close(ec);
+  acceptor.close(ec);
 }
 
 std::string TcpServer::getClientIp() {
-  char client_ip[INET_ADDRSTRLEN];
-  inet_ntop(AF_INET, &client_address.sin_addr, client_ip, INET_ADDRSTRLEN);
-  return std::string(client_ip);
+  try {
+    return socket.remote_endpoint().address().to_string();
+  } catch (const std::exception &e) {
+    return "";
+  }
 }
