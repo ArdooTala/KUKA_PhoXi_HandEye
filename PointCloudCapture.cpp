@@ -12,13 +12,17 @@
 #include <pcl/point_types.h>
 #include <string>
 #include <vector>
+#include <filesystem>
+#include <chrono>
+#include <format>
 
 void printUsage(const char* progName) {
-    std::cout << "Usage: " << progName << " [options] [hardware_id]" << std::endl;
+    std::cout << "Usage: " << progName << " [options]" << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "  -i, --hw-id <id>    Set the Scanner's Hardware ID: <PAD-104>" << std::endl;
     std::cout << "  -p, --port <port>   Set the TCP port: <59153>" << std::endl;
     std::cout << "  -h, --help          Show this help message" << std::endl;
+    std::cout << "  -d, --dir <dir>     Set the directory to save captures (default: current directory)" << std::endl;
 }
 
 pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr
@@ -36,6 +40,7 @@ convertToPCL(const pho::api::PFrame &Frame) {
 int main(int argc, char *argv[]) {
   std::string hwId = "PAD-104";
   int port = 59153;
+  std::filesystem::path save_dir = std::filesystem::current_path();
 
   for (int i = 1; i < argc; ++i) {
     std::string arg = argv[i];
@@ -56,14 +61,19 @@ int main(int argc, char *argv[]) {
         std::cerr << "Error: " << arg << " requires a hardware ID" << std::endl;
         return 1;
       }
-    } else {
-      // Assuming remaining arguments are positional HWID for backward compatibility
-      hwId = arg;
+    } else if (arg == "-d" || arg == "--dir") {
+      if (i + 1 < argc) {
+        save_dir = argv[++i];
+      } else {
+        std::cerr << "Error: " << arg << " requires a directory" << std::endl;
+        return 1;
+      }
     }
   }
 
   std::cout << "Connection HWID: " << hwId << std::endl;
   std::cout << "Connection Port: " << port << std::endl;
+  std::cout << "Save Directory: " << save_dir << std::endl;
 
   std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
 
@@ -86,6 +96,15 @@ int main(int argc, char *argv[]) {
   // A client has connected!
   std::cout << "Client connected!" << std::endl;
   std::cout << "Client IP: " << server.getClientIp() << std::endl;
+
+  // Make a directory for captures if it doesn't exist
+  std::filesystem::current_path(save_dir);
+  auto now = std::chrono::system_clock::now();
+  auto now_sec = std::chrono::floor<std::chrono::seconds>(now);
+  std::chrono::zoned_time local_time{std::chrono::current_zone(), now_sec};
+  std::filesystem::path timestamp(std::format("Scans_{:%Y%m%d%H%M%S}", local_time));
+  std::filesystem::create_directory(timestamp);
+  std::cout << "Point Clouds Save Path: " << timestamp << std::endl;
 
   std::string msg;
   int index = 0;
@@ -114,7 +133,8 @@ int main(int argc, char *argv[]) {
         new pcl::PointCloud<pcl::PointXYZRGBNormal>());
     pcl::transformPointCloud(*source_cloud, *transformed_cloud, rob_transform);
 
-    std::string file_name = "/home/ardeshir/Desktop/TestCaptures/capture_" + std::to_string(index) + ".ply";
+    std::string file_name =  "capture_" + std::to_string(index) + ".ply";
+    std::string full_path = save_dir / timestamp / file_name;
     pcl::io::savePLYFile(file_name, *transformed_cloud);
     index++;
   }
