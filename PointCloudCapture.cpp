@@ -1,6 +1,5 @@
 #define PHOXI_PCL_SUPPORT
 
-#include "PhoXi.h"
 #include "detector/marker_detector.h"
 #include "kuka_utils/kuka_utils.h"
 #include "pugixml.hpp"
@@ -11,10 +10,8 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <string>
-#include <vector>
 #include <filesystem>
 #include <chrono>
-#include <format>
 
 void printUsage(const char* progName) {
     std::cout << "Usage: " << progName << " [options]" << std::endl;
