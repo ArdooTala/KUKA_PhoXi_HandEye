@@ -73,7 +73,7 @@ void PhoXiCam::InitDevice(bool calibration) {
   // Get the current Output configuration
   pho::api::FrameOutputSettings NewOutputSettings;
   NewOutputSettings.SendPointCloud = true;
-  NewOutputSettings.SendNormalMap = false;
+  NewOutputSettings.SendNormalMap = true;
   NewOutputSettings.SendDepthMap = true;
   NewOutputSettings.SendConfidenceMap = false;
   NewOutputSettings.SendTexture = true;
@@ -81,9 +81,6 @@ void PhoXiCam::InitDevice(bool calibration) {
   NewOutputSettings.SendEventMap = false;
   device->OutputSettings = NewOutputSettings;
 
-  device->MotionCam->OperationMode = pho::api::PhoXiOperationMode::Scanner;
-  device->MotionCamScannerMode->TextureSource =
-      pho::api::PhoXiTextureSource::LED;
   device->CoordinatesSettings->CameraSpace =
       pho::api::PhoXiCameraSpace::PrimaryCamera;
   device->CoordinatesSettings->CoordinateSpace =
@@ -114,6 +111,7 @@ void PhoXiCam::InitDevice(bool calibration) {
                 "enabled": true,
                 "point_cloud": false,
                 "color_camera_image": true,
+                "normal_map": true,
                 "depth_map": true,
                 "texture": true,
                 "split_rgb_channels": false
@@ -157,12 +155,9 @@ pho::api::PFrame PhoXiCam::Trigger() {
     throw std::runtime_error("Scanner is not acquiring");
 
   std::cout << "Triggering a scan..." << std::endl;
-  lastFrameIndex = device->TriggerFrame(
-      /*WaitForAccept*/ true,
-      /*WaitForGrabbingEnd*/ true);
+  lastFrameIndex = device->TriggerFrame(true, true);
 
   if (lastFrameIndex < 0) {
-    // If negative number is returned trigger was unsuccessful
     throw std::runtime_error("Trigger was unsuccessful!");
   }
 
@@ -192,7 +187,7 @@ pho::api::PFrame PhoXiCam::Trigger() {
     throw std::runtime_error("Frame Texture is empty");
   }
 
-    return frame;
+  return frame;
 }
 
 pho::api::PhoXiCoordinateTransformation PhoXiCam::GetCameraTransform() {
