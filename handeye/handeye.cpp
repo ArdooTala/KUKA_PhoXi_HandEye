@@ -54,8 +54,9 @@ Eigen::Isometry3d HandEye::calculate_handeye() {
 std::pair<Eigen::Vector3d, Eigen::Matrix3d> HandEye::calculate_reprojection() {
     Eigen::Vector3d mean = Eigen::Vector3d::Zero();
     for (int i = 0 ; i < m_size ; i++) {
-        world2target[i] = reproject(m_rob[i], m_cam[i]);
-        mean += world2target[i].translation();
+        auto prj = reproject(m_rob[i], m_cam[i]);
+        world2target.push_back(prj);
+        mean += prj.translation();
     }
     mean /= static_cast<double>(m_size);
 
