@@ -180,12 +180,14 @@ pho::api::PFrame PhoXiCam::Trigger() {
   std::cout << "Frame successfully retrieved." << std::endl;
 
   if (frame->Empty()) {
+    std::cout << "Frame is empty." << std::endl;
     throw std::runtime_error("Frame is empty");
   }
 
-  if (frame->Texture.Empty()) {
-    throw std::runtime_error("Frame Texture is empty");
-  }
+  // if (frame->Texture.Empty()) {
+  //   std::cout << "Frame texture is empty." << std::endl;
+  //   throw std::runtime_error("Frame Texture is empty");
+  // }
 
   return frame;
 }
