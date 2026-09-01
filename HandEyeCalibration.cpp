@@ -95,6 +95,12 @@ int main(int argc, char *argv[]) {
   auto board_pose = he.estimate_board_pose();
   std::cout << ">>> Board Pose <<<" << std::endl << board_pose.matrix() << std::endl;
 
+  auto error = he.calculate_reprojection_error();
+  std::cout << ">>> Error <<<" << std::endl;
+  std::cout << "Mean     >> t: " << error.mean_t << " / r: " << error.mean_r << std::endl;
+  std::cout << "Max      >> t: " << error.max_t << " / r: " << error.max_r << std::endl;
+  std::cout << "Variance >> t: " << error.var_t << " / r: " << error.var_r << std::endl;
+
   while (!server.receiveMessage().empty())
     ;
 

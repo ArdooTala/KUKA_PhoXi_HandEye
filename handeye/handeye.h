@@ -5,6 +5,11 @@
 
 namespace HandEye {
 
+struct ReprojectionError {
+  double mean_t, max_t, var_t;
+  double mean_r, max_r, var_r;
+};
+
 class HandEye {
 public:
   HandEye(std::vector<Eigen::Isometry3d> &cam,
@@ -12,6 +17,7 @@ public:
 
   Eigen::Isometry3d calculate_handeye();
   Eigen::Isometry3d estimate_board_pose();
+  ReprojectionError calculate_reprojection_error();
 
 private:
   Eigen::Isometry3d reproject(Eigen::Isometry3d rob_tf,

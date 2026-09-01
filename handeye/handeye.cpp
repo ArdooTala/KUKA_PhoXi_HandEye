@@ -80,6 +80,49 @@ Eigen::Isometry3d HandEye::estimate_board_pose() {
     return board_pose;
 }
 
+ReprojectionError HandEye::calculate_reprojection_error() {
+    ReprojectionError err = {};
+
+    Eigen::Isometry3d board_pose = estimate_board_pose();
+    if (m_size <= 0)
+        return err;
+
+    std::vector<double> t_err(m_size), r_err(m_size);
+
+    for (int i = 0 ; i < m_size ; i++) {
+        const auto &pose = world2target[i];
+
+        t_err[i] = (pose.translation() - board_pose.translation()).norm();
+
+        Eigen::Matrix3d R_rel = board_pose.linear().transpose() * pose.linear();
+        double cos_angle = std::clamp((R_rel.trace() - 1.0) / 2.0, -1.0, 1.0);
+        r_err[i] = std::acos(cos_angle) * 180.0 / M_PI;
+    }
+
+    auto stats = [](const std::vector<double> &v, double &mean, double &max,
+                    double &var) {
+        mean = 0.0;
+        max = 0.0;
+        for (double e : v) {
+            mean += e;
+            max = std::max(max, e);
+        }
+        mean /= static_cast<double>(v.size());
+
+        var = 0.0;
+        if (v.size() > 1) {
+            for (double e : v)
+                var += (e - mean) * (e - mean);
+            var /= static_cast<double>(v.size() - 1);
+        }
+    };
+
+    stats(t_err, err.mean_t, err.max_t, err.var_t);
+    stats(r_err, err.mean_r, err.max_r, err.var_r);
+
+    return err;
+}
+
 Eigen::Isometry3d HandEye::reproject(Eigen::Isometry3d rob_tf, Eigen::Isometry3d cam_tf) {
     return rob_tf * gripper2cam * cam_tf;
 }
