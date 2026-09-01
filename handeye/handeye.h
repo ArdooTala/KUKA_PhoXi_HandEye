@@ -11,7 +11,7 @@ public:
           std::vector<Eigen::Isometry3d> &rob);
 
   Eigen::Isometry3d calculate_handeye();
-  std::pair<Eigen::Vector3d, Eigen::Matrix3d> calculate_reprojection();
+  Eigen::Isometry3d estimate_board_pose();
 
 private:
   Eigen::Isometry3d reproject(Eigen::Isometry3d rob_tf,

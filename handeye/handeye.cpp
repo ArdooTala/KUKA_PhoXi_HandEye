@@ -51,7 +51,9 @@ Eigen::Isometry3d HandEye::calculate_handeye() {
   return gripper2cam;
 }
 
-std::pair<Eigen::Vector3d, Eigen::Matrix3d> HandEye::calculate_reprojection() {
+Eigen::Isometry3d HandEye::estimate_board_pose() {
+    world2target.clear();
+
     Eigen::Vector3d mean = Eigen::Vector3d::Zero();
     for (int i = 0 ; i < m_size ; i++) {
         auto prj = reproject(m_rob[i], m_cam[i]);
@@ -60,17 +62,22 @@ std::pair<Eigen::Vector3d, Eigen::Matrix3d> HandEye::calculate_reprojection() {
     }
     mean /= static_cast<double>(m_size);
 
-    Eigen::Matrix3d covariance = Eigen::Matrix3d::Zero();
-    
-    for (const auto& target : world2target) {
-        Eigen::Vector3d diff = target.translation() - mean;
-        // Outer product: (3x1) * (1x3) = (3x3) matrix
-        covariance += diff * diff.transpose();
+    Eigen::Isometry3d board_pose = Eigen::Isometry3d::Identity();
+    board_pose.translation() = mean;
+
+    if (m_size > 0) {
+        Eigen::Quaterniond q_acc(world2target[0].linear());
+        for (int i = 1 ; i < m_size ; i++) {
+            Eigen::Quaterniond q(world2target[i].linear());
+            if (q_acc.dot(q) < 0.0)
+                q.coeffs() *= -1.0;
+            q_acc.coeffs() += q.coeffs();
+        }
+        q_acc.normalize();
+        board_pose.linear() = q_acc.toRotationMatrix();
     }
 
-    covariance /= static_cast<double>(m_size - 1);
-
-    return {mean, covariance};
+    return board_pose;
 }
 
 Eigen::Isometry3d HandEye::reproject(Eigen::Isometry3d rob_tf, Eigen::Isometry3d cam_tf) {

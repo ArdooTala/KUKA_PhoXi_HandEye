@@ -92,8 +92,8 @@ int main(int argc, char *argv[]) {
     server.sendMessage(eki_msg.get_string());
   }
 
-  auto reproj_error = he.calculate_reprojection();
-  std::cout << ">>> ERROR <<<" << std::endl << reproj_error.first << std::endl;
+  auto board_pose = he.estimate_board_pose();
+  std::cout << ">>> Board Pose <<<" << std::endl << board_pose.matrix() << std::endl;
 
   while (!server.receiveMessage().empty())
     ;
