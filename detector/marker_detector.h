@@ -17,6 +17,7 @@ public:
 
 private:
   bool Connect();
+  bool TrySetProfile(const std::string& profileName);
 
 private:
   std::string hwId;

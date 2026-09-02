@@ -58,35 +58,96 @@ bool PhoXiCam::Connect() {
   return 1;
 }
 
+bool PhoXiCam::TrySetProfile(const std::string& targetProfile) {
+    if (!device->Profiles.isEnabled())
+    {
+        std::cerr << "Your device does not support profiles" << std::endl;
+        return false;
+    }
+
+    //try to load profile from file, if fails, the use profile content from previous import
+    pho::api::PhoXiProfileContent ProfileContent;
+    std::ifstream ImportProfileFile(targetProfile + ".phop", std::ios::binary);
+    if (ImportProfileFile.is_open()) {
+        std::vector<unsigned char> buffer((std::istreambuf_iterator<char>(ImportProfileFile)), (std::istreambuf_iterator<char>()));
+        ProfileContent.Content.clear();
+        ProfileContent.Content = std::move(buffer);
+    }
+    else {
+        std::cout << "Can not open profile file: " << targetProfile << ".phop"
+            << std::endl;
+        return false;
+    }
+
+    std::vector<pho::api::PhoXiProfileDescriptor> ProfilesList = device->Profiles;
+    if (!device->Profiles.isLastOperationSuccessful())
+    {
+        std::cout << "Can not get profile list: "
+            << device->Profiles.GetLastErrorMessage() << std::endl;
+        return false;
+    }
+
+    for (const pho::api::PhoXiProfileDescriptor &profile : ProfilesList)
+    {
+      if (profile.Name != targetProfile)
+        continue;
+
+      std::cout << profile.Name << " profile exists; Recreating..."
+          << std::endl;
+
+      device->DeleteProfile = targetProfile;
+      if (!device->DeleteProfile.isLastOperationSuccessful())
+      {
+        std::cout << "Can not delete profile: "
+                  << device->ImportProfile.GetLastErrorMessage() << std::endl;
+        return false;
+      }
+      std::cout << "Profile was deleted." << std::endl;
+      break;
+    }
+
+    ProfileContent.Name = targetProfile;
+    device->ImportProfile = ProfileContent;
+    if (!device->ImportProfile.isLastOperationSuccessful())
+    {
+        std::cout << "Can not import profile: " << device->ImportProfile.GetLastErrorMessage() << std::endl;
+        return false;
+    }
+    std::cout << "Profile imported: " << ProfileContent.Name << std::endl;
+
+    device->ActiveProfile = targetProfile;
+    if (!device->ActiveProfile.isLastOperationSuccessful())
+    {
+        std::cout << "Can not set active profile: "
+            << device->ActiveProfile.GetLastErrorMessage() << std::endl;
+        return false;
+    }
+    std::cout << "Profile Set: " << ProfileContent.Name << std::endl;
+
+    return true;
+}
+
 void PhoXiCam::InitDevice(bool calibration) {
   if (!Connect()) {
     std::cerr << "Could not connect to the device!" << std::endl;
     return;
   }
+  
+  if (calibration) {
+    if (!TrySetProfile("HandEye_Calibration")) {
+      std::cerr << "Could not set profile!" << std::endl;
+    }
 
-  device->TriggerMode = pho::api::PhoXiTriggerMode::Software;
-  if (!device->TriggerMode.isLastOperationSuccessful()) {
-    std::cout << "Failed to set trigger mode to Software!";
-    return;
+    pho::api::FrameOutputSettings NewOutputSettings;
+    NewOutputSettings.SendPointCloud = true;
+    NewOutputSettings.SendNormalMap = false;
+    NewOutputSettings.SendDepthMap = true;
+    NewOutputSettings.SendConfidenceMap = false;
+    NewOutputSettings.SendTexture = true;
+    NewOutputSettings.SendColorCameraImage = true;
+    NewOutputSettings.SendEventMap = false;
+    device->OutputSettings = NewOutputSettings;
   }
-
-  // Get the current Output configuration
-  pho::api::FrameOutputSettings NewOutputSettings;
-  NewOutputSettings.SendPointCloud = true;
-  NewOutputSettings.SendNormalMap = true;
-  NewOutputSettings.SendDepthMap = true;
-  NewOutputSettings.SendConfidenceMap = false;
-  NewOutputSettings.SendTexture = true;
-  NewOutputSettings.SendColorCameraImage = true;
-  NewOutputSettings.SendEventMap = false;
-  device->OutputSettings = NewOutputSettings;
-
-  device->CoordinatesSettings->CameraSpace =
-      pho::api::PhoXiCameraSpace::PrimaryCamera;
-  device->CoordinatesSettings->CoordinateSpace =
-      calibration ? pho::api::PhoXiCoordinateSpace::MarkerSpace
-                  : pho::api::PhoXiCoordinateSpace::CameraSpace;
-  device->CoordinatesSettings->RecognizeMarkers = calibration;
 
   if (device->IsRecording()) {
     device->StopRecording();
@@ -129,7 +190,7 @@ void PhoXiCam::InitDevice(bool calibration) {
     return;
   }
 
-  std::cout << "Device config is set for calibration." << std::endl;
+  std::cout << "Device configed successfully" << std::endl;
 }
 
 pho::api::PFrame PhoXiCam::Trigger() {

@@ -27,6 +27,12 @@ target_link_libraries(HandEyeCalibration
         handeye_lib
 )
 
+file(
+    COPY_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/HandEye_Calibration.phop
+        ${CMAKE_CURRENT_BINARY_DIR}/HandEye_Calibration.phop
+)
+
 add_executable(PointCloudCapture)
 
 target_sources(PointCloudCapture

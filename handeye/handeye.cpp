@@ -27,19 +27,11 @@ Eigen::Isometry3d HandEye::calculate_handeye() {
     cv::eigen2cv((Eigen::Vector3d)m_rob[i].translation(), t_gripper2base[i]);
     cv::eigen2cv((Eigen::Matrix3d)m_cam[i].linear(), R_target2cam[i]);
     cv::eigen2cv((Eigen::Vector3d)m_cam[i].translation(), t_target2cam[i]);
-
-    std::cout << "tvecs" << std::endl;
-    std::cout << "ROB" << std::endl;
-    std::cout << t_gripper2base[i] << std::endl;
-    std::cout << m_rob[i].translation() << std::endl;
-    std::cout << "CAM" << std::endl;
-    std::cout << t_target2cam[i] << std::endl;
-    std::cout << m_cam[i].translation() << std::endl;
   }
 
   cv::calibrateHandEye(R_gripper2base, t_gripper2base, R_target2cam,
-                       t_target2cam, R_cam2gripper, t_cam2gripper);
-  // cv::CALIB_HAND_EYE_DANIILIDIS);
+                       t_target2cam, R_cam2gripper, t_cam2gripper, 
+                       cv::CALIB_HAND_EYE_DANIILIDIS);
 
   Eigen::Matrix3d R_res;
   cv::cv2eigen(R_cam2gripper, R_res);
