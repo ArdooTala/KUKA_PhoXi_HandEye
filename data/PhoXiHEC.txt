@@ -1,0 +1,1228 @@
+PhoXi Control Version: 1.16.1
+PhoXi API Version: 1.16.1
+
+You have already PhoXi device opened in PhoXi Control: 
+Connected device: PAD-104
+Device config is set for calibration.
+Server listening on port 59153...
+Client connected!
+Client IP: 172.31.1.147
+<StateSend><Position X="2309.754639" Y="769.955322" Z="2119.508301" A="-179.496567" B="-17.365746" C="147.067535"></Position></StateSend>
+>>> Robot TCP Position:
+  -0.9543820959428662    0.1548825480405531   -0.2552767346550936           2309.754639
+-0.008385954616427313    0.8407052760278331    0.5414280327283916            769.955322
+   0.2984702509612516    0.5188699597889925   -0.8010552253869245           2119.508301
+                    0                     0                     0                     1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 0
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1956.942261" Y="1018.648438" Z="2355.591797" A="171.735199" B="-0.603290" C="161.254623"></Position></StateSend>
+>>> Robot TCP Position:
+-0.9895594280284854  0.1394718503337576 0.03632824471969658         1956.942261
+ 0.1437403015831752  0.9366348467895343  0.3194587445669994         1018.648438
+0.01052920228289293  0.3213452454044146 -0.9469035690899374         2355.591797
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 1
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1663.070923" Y="1430.918823" Z="2228.088135" A="161.099426" B="16.676350" C="172.613358"></Position></StateSend>
+>>> Robot TCP Position:
+-0.9062908717820433  0.2863344006119637  0.3108849735042378         1663.070923
+ 0.3103028637110872  0.9501815289259745 0.02944817244916778         1430.918823
+-0.2869651346370175  0.1231571074444547 -0.9499912306904064         2228.088135
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 2
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2463.247314" Y="659.075989" Z="2166.727051" A="154.906677" B="-28.476681" C="154.566010"></Position></StateSend>
+>>> Robot TCP Position:
+-0.7960486011418058   0.568436430756413 -0.2078139764526997         2463.247314
+ 0.3727832952263521  0.7310036803478408  0.5715472282481073          659.075989
+ 0.4768010480487181  0.3775097925972535 -0.7938180629544922         2166.727051
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 3
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2481.168213" Y="1330.458496" Z="2074.795410" A="142.407562" B="-13.869105" C="-176.137177"></Position></StateSend>
+>>> Robot TCP Position:
+ -0.7692693065504173   0.5958591922801513  -0.2306004270912901          2481.168213
+    0.59225539180131   0.8004212374619953    0.092516990342773          1330.458496
+  0.2397045783495103 -0.06540386529138481  -0.9686403096729093           2074.79541
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 4
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1949.452148" Y="1950.339966" Z="1975.768311" A="130.953568" B="31.333639" C="-175.176254"></Position></StateSend>
+>>> Robot TCP Position:
+ -0.5598526326750206   0.7812280352804292   0.2761300175256745          1949.452148
+  0.6450918671915199   0.6200997599504574   -0.446466987125301          1950.339966
+ -0.5200206847522578 -0.07182648955131979  -0.8511283351108263          1975.768311
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 5
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2662.235107" Y="1449.370483" Z="1838.584717" A="124.446495" B="-7.847775" C="-161.145905"></Position></StateSend>
+>>> Robot TCP Position:
+ -0.5603388268581355   0.7554490219279975    -0.33958382526746          2662.235107
+  0.8169313185694618   0.5716745757738873 -0.07623253999511478          1449.370483
+  0.1365416414710527  -0.3201327141698863  -0.9374814267294114          1838.584717
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 6
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2011.534424" Y="981.847290" Z="2026.382690" A="121.031860" B="-7.576643" C="153.985275"></Position></StateSend>
+>>> Robot TCP Position:
+-0.5110138673974776  0.7998753486133022  0.3147447442106404         2011.534424
+ 0.8493996687770283  0.4137293741401697  0.3276403632873368           981.84729
+ 0.1318523037680714  0.4347728506408049 -0.8908353037103551          2026.38269
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 7
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2200.589355" Y="1146.053711" Z="2078.165527" A="107.526810" B="-2.896910" C="167.755356"></Position></StateSend>
+>>> Robot TCP Position:
+-0.3007671855202232  0.9351111175070101  0.1873667473940731         2200.589355
+ 0.9523575492792646  0.2840800595845342  0.1109667431136048         1146.053711
+0.05053907839520763   0.211815291377271 -0.9760020921564283         2078.165527
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 8
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2146.202637" Y="357.020660" Z="1978.159058" A="114.416611" B="-38.108494" C="151.645477"></Position></StateSend>
+>>> Robot TCP Position:
+-0.3252562820794005  0.9224786851429579  0.2079457295180755         2146.202637
+ 0.7164712873124851  0.0968870798261614  0.6908558375084843           357.02066
+ 0.6171525301128367  0.3736923456798094 -0.6924426224284912         1978.159058
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 9
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1919.497192" Y="449.298370" Z="1915.383911" A="112.366425" B="-33.277515" C="141.225418"></Position></StateSend>
+>>> Robot TCP Position:
+-0.3181305115177713  0.8517236523854667  0.4163649812467454         1919.497192
+ 0.7731280766402325 -0.0211072646681767   0.633898620040147           449.29837
+ 0.5486947737604364  0.5235659493754238  -0.651776604292142         1915.383911
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 10
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2430.666016" Y="630.469727" Z="2034.327271" A="78.805199" B="-22.549152" C="-177.425476"></Position></StateSend>
+>>> Robot TCP Position:
+  0.1793031028698582   0.9833268296005027  0.03031078172970059          2430.666016
+  0.9059782923410837  -0.1770518500348905   0.3845204496589971           630.469727
+  0.3834758546609885 -0.04148479946977399  -0.9226187079747399          2034.327271
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 11
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2933.401611" Y="708.284790" Z="1900.688599" A="65.903084" B="-3.343695" C="-152.474884"></Position></StateSend>
+>>> Robot TCP Position:
+ 0.4075862784053234  0.8205333996503716 -0.4007472591470861         2933.401611
+ 0.9113021327732564 -0.3374618544393351  0.2358981127548065           708.28479
+0.05832536719655168 -0.4613506658243474 -0.8852986584677618         1900.688599
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 12
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2566.760498" Y="538.551331" Z="2186.185059" A="58.164497" B="-12.206739" C="-166.574280"></Position></StateSend>
+>>> Robot TCP Position:
+  0.5155564943878095   0.8522445658596057 -0.08877331275402719          2566.760498
+  0.8303581940891765  -0.4713593726865377   0.2971962504634171           538.551331
+  0.2114397564402536  -0.2269351046958684  -0.9506806444086049          2186.185059
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 13
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2310.942627" Y="205.159958" Z="1648.078125" A="47.202435" B="-39.643661" C="-157.978577"></Position></StateSend>
+>>> Robot TCP Position:
+ 0.5231643302557734  0.8427578292794633  0.1267214454470707         2310.942627
+ 0.5650142491394443 -0.4543099841751359  0.6887389465887475          205.159958
+ 0.6380109574430661 -0.2887242273640271 -0.7138489607162199         1648.078125
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 14
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2259.638916" Y="574.023865" Z="2110.834229" A="42.091755" B="-12.991350" C="-175.533279"></Position></StateSend>
+>>> Robot TCP Position:
+  0.7230782374163403   0.6812759124856872   0.1141095685806976          2259.638916
+  0.6531623431886554  -0.7280826537511231   0.2080254858112998           574.023865
+  0.2248039501770018 -0.07588662842369756  -0.9714444933249144          2110.834229
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 15
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2415.964844" Y="673.026550" Z="2114.962158" A="32.545807" B="0.253576" C="-174.505280"></Position></StateSend>
+>>> Robot TCP Position:
+   0.8429533588450939    0.5351445079593932  -0.05522671828628972           2415.964844
+   0.5379684449850165   -0.8393162111344992   0.07834698416168744             673.02655
+-0.004425721656132465  -0.09575308521257865   -0.9953952780981505           2114.962158
+                    0                     0                     0                     1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 16
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2362.225098" Y="716.292664" Z="2175.534180" A="23.454857" B="2.513808" C="-178.603363"></Position></StateSend>
+>>> Robot TCP Position:
+   0.916491154860431   0.3969274581932226 -0.04992550445274403          2362.225098
+  0.3976433705570137  -0.9175269305231171 0.004907302403988123    716.2926639999999
+-0.04386015178554396 -0.02435004511482878  -0.9987408885132592           2175.53418
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 17
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2297.001953" Y="395.442657" Z="1736.062988" A="13.390737" B="-0.723696" C="-161.066666"></Position></StateSend>
+>>> Robot TCP Position:
+  0.9727357323052631   0.2230476129984793 -0.06352131478664473          2297.001953
+  0.2315721583048526  -0.9192318610825774   0.3184134436054686           395.442657
+ 0.01263054213308598  -0.3244419022049114  -0.9458212946952942          1736.062988
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 18
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1831.304932" Y="174.918930" Z="1984.705444" A="4.769750" B="-21.027468" C="-158.407379"></Position></StateSend>
+>>> Robot TCP Position:
+ 0.9301760272290515  0.2089049873179253  0.3018795532030555         1831.304932
+0.07761452464444867 -0.9156239771003079  0.3944727089713949           174.91893
+ 0.3588154733739827 -0.3434988192595602 -0.8679055347413636         1984.705444
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 19
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2120.117188" Y="70.715584" Z="1360.579224" A="-3.299297" B="3.831769" C="-135.522980"></Position></StateSend>
+>>> Robot TCP Position:
+   0.9961107957879796  -0.08780804667804876 -0.007282132464034554           2120.117188
+ -0.05742312453789706   -0.7096542366458296    0.7022061301205861     70.71558400000001
+ -0.06682714480615866   -0.6990569442822309   -0.7119364587994117           1360.579224
+                    0                     0                     0                     1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 20
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2004.402832" Y="378.218933" Z="1853.438354" A="-13.136274" B="0.751589" C="-164.682312"></Position></StateSend>
+>>> Robot TCP Position:
+  0.9737484945205356  -0.2225689402657527   0.0477172531477905          2004.402832
+ -0.2272483336907307  -0.9384502426301926   0.2601333060992378           378.218933
+-0.01311732647214371  -0.2641480814549167  -0.9643929317502855          1853.438354
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 21
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1886.952881" Y="552.648132" Z="1854.258789" A="-22.732841" B="-3.389733" C="-172.694397"></Position></StateSend>
+>>> Robot TCP Position:
+ 0.9207030936806234 -0.3763630233927437  0.1032312351451939         1886.952881
+-0.3857586714675242 -0.9177348920608648 0.09461984612988696          552.648132
+0.05912749508088385 -0.1269391291789331 -0.9901466541925767         1854.258789
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 22
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1687.224243" Y="502.518372" Z="1674.805664" A="-31.943998" B="-9.002855" C="-162.072723"></Position></StateSend>
+>>> Robot TCP Position:
+ 0.8381117774911675 -0.4625286996187004  0.2891986349546444         1687.224243
+-0.5225720105043589 -0.8328508403297536  0.1824225084781335          502.518372
+ 0.1564836805166209 -0.3040175649383708 -0.9397266506494935         1674.805664
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 23
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1598.513062" Y="407.925934" Z="1855.328613" A="-39.732544" B="-2.040555" C="-158.792816"></Position></StateSend>
+>>> Robot TCP Position:
+ 0.7685489448833793 -0.5860112360734977  0.2567554293763924         1598.513062
+-0.6387993971284791 -0.7251895267516202  0.2569736961598456          407.925934
+0.03560687499536851 -0.3615120765415347 -0.9316872699397001         1855.328613
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 24
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1366.602051" Y="1199.671265" Z="1929.789795" A="-56.424252" B="-32.252041" C="-175.830917"></Position></StateSend>
+>>> Robot TCP Position:
+  0.4677099078966946  -0.8094950620687118   0.3549157456941549          1366.602051
+ -0.7046068675982937   -0.583898602567174  -0.4032264674515083          1199.671265
+  0.5336446422373096 -0.06148305788161651  -0.8434709416482229          1929.789795
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 25
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1938.531372" Y="468.498108" Z="1942.857300" A="-61.683815" B="19.946535" C="178.298630"></Position></StateSend>
+>>> Robot TCP Position:
+ 0.4458820847550533 -0.8751509347375986 -0.1878829633638849         1938.531372
+ -0.827532797951357  -0.483044433831348  0.2861075728801161          468.498108
+ -0.341143129506203 0.02790907329991341 -0.9395969608391963           1942.8573
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 26
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1615.085693" Y="602.257446" Z="1847.865479" A="-67.585144" B="9.708554" C="-170.208069"></Position></StateSend>
+>>> Robot TCP Position:
+ 0.3758490781325238 -0.9219157453906647 0.09385536142228201         1615.085693
+-0.9112075440136965 -0.3492418335052796   0.218474148270219          602.257446
+-0.1686365387437112 -0.1676350205972655 -0.9713188033132556         1847.865479
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 27
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1606.989502" Y="735.463257" Z="1871.518555" A="-77.553970" B="7.301919" C="-174.524323"></Position></StateSend>
+>>> Robot TCP Position:
+  0.2137720657538749  -0.9746573270735653  0.06591356981027457          1606.989502
+  -0.968580221526815  -0.2026933680598959   0.1441102113370232           735.463257
+  -0.127097829920054 -0.09464931762220186  -0.9873639897744217          1871.518555
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 28
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="2246.702637" Y="810.243713" Z="2140.680908" A="-90.591644" B="6.846820" C="151.123001"></Position></StateSend>
+>>> Robot TCP Position:
+-0.01025231194743492  -0.8762062756574588   -0.481827202011486          2246.702637
+ -0.9928154873747007 -0.04852769555732617   0.1093730807503854           810.243713
+ -0.1192153435119295    0.479486835337927  -0.8694136395346874          2140.680908
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 29
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1860.928589" Y="188.346024" Z="2011.204590" A="-108.128296" B="35.585693" C="159.056595"></Position></StateSend>
+>>> Robot TCP Position:
+-0.2530381162551087 -0.9522953133484189 -0.1706028953350519         1860.928589
+-0.7728783355630979 0.09290981713352386  0.6277155759557274          188.346024
+-0.5819199172904134  0.2906912486726282 -0.7595181418543382          2011.20459
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 30
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1305.901611" Y="737.648071" Z="1671.869507" A="-98.514015" B="23.627235" C="-162.562271"></Position></StateSend>
+>>> Robot TCP Position:
+-0.1356405290507199  -0.925747970486275  0.3529764043380004         1305.901611
+-0.9060758103382553   0.260026540217399  0.3337855963076345          737.648071
+-0.4007845715577317 -0.2745485267181597 -0.8740679800096633         1671.869507
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 31
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1573.855835" Y="1437.633911" Z="1903.033691" A="-116.833214" B="-13.651258" C="-169.220306"></Position></StateSend>
+>>> Robot TCP Position:
+-0.4386430977857665 -0.8965034534510685 0.06223978402287912         1573.855835
+-0.8671163580762364  0.4040404251563906 -0.2913083527742507         1437.633911
+ 0.2360115554830119 -0.1817495331211366 -0.9546023532805366         1903.033691
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 32
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1568.303345" Y="981.233459" Z="1866.908203" A="-124.080566" B="13.998350" C="176.896973"></Position></StateSend>
+>>> Robot TCP Position:
+-0.5437169682549721 -0.8343734618188624 0.09051400247491577         1568.303345
+-0.8036536405313427  0.5486913113188588  0.2303880876779666          981.233459
+-0.2418939529883726 0.05252400494629567  -0.968880046451603         1866.908203
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 33
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1225.670776" Y="1296.887207" Z="1377.745117" A="-127.227127" B="24.700462" C="-147.955246"></Position></StateSend>
+>>> Robot TCP Position:
+ -0.5496237578692156   -0.540789903424824   0.6367574146717817          1225.670776
+ -0.7233911190027296    0.689338603949976 -0.03895610417221873          1296.887207
+ -0.4178743994715405  -0.4820358590997847  -0.7700794873311663          1377.745117
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 34
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1707.602295" Y="1486.081665" Z="1980.515137" A="-143.133835" B="-4.837330" C="-172.232681"></Position></StateSend>
+>>> Robot TCP Position:
+-0.7971894504635428 -0.6035613314313324 0.01423724939977875         1707.602295
+-0.5978109442043111  0.7858612896946511 -0.1582533043857521         1486.081665
+ 0.0843270719234579 -0.1346690482638715 -0.9872958991004261         1980.515137
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 35
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1650.846191" Y="1238.146606" Z="1825.733643" A="-151.742935" B="10.562937" C="176.268188"></Position></StateSend>
+>>> Robot TCP Position:
+-0.8659059024416731 -0.4829339519594846  0.1303141057655129         1650.846191
+-0.4654056328840229  0.8733160481475698  0.1439328903612154         1238.146606
+-0.1833154794241151 0.06398342045175257 -0.9809697023409032         1825.733643
+                  0                   0                   0                   1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 36
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1623.139648" Y="1698.291382" Z="2015.763916" A="-161.775223" B="5.452706" C="-163.354095"></Position></StateSend>
+>>> Robot TCP Position:
+ -0.9455388596691439  -0.2737848035864775    0.176062904044801          1623.139648
+ -0.3113305129579558   0.9185454467807374  -0.2436135749495741          1698.291382
+-0.09502408408877699  -0.2851598560868791  -0.9537579776440137          2015.763916
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 37
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1546.323120" Y="1688.151123" Z="1568.817871" A="-170.111404" B="24.191133" C="-159.089767"></Position></StateSend>
+>>> Robot TCP Position:
+  -0.898631714020961 -0.01634248641778957   0.4383993221863312           1546.32312
+ -0.1566520378852605   0.9453792022134034  -0.2858641338971082          1688.151123
+ -0.4097818707338639  -0.3255627238490815  -0.8521078166862583          1568.817871
+                   0                    0                    0                    1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 38
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Position X="1751.609619" Y="1059.603394" Z="1895.028076" A="-179.537674" B="11.738581" C="155.880905"></Position></StateSend>
+>>> Robot TCP Position:
+  -0.9790541644249715  -0.09049721712943587    0.1823820079227881           1751.609619
+-0.007900268111406462    0.9119975080062237    0.4101196546792239           1059.603394
+  -0.2034466241693091    0.4000884890649388   -0.8936099104373483           1895.028076
+                    0                     0                     0                     1
+Dropped 0 frames in acquisition buffer
+Triggering a scan...
+Scan was triggered, Frame Id: 39
+Frame successfully retrieved.
+>>> Camera Position in Marker Coordinate Space:
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+<StateSend><Tool Number="10"><Data X="0.000000" Y="0.000000" Z="0.000000" A="0.000000" B="0.000000" C="0.000000"></Data></Tool></StateSend>
+Array Size: 40
+tvecs
+ROB
+[2309.754639;
+ 769.955322;
+ 2119.508301]
+2309.754639
+ 769.955322
+2119.508301
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1956.942261;
+ 1018.648438;
+ 2355.591797]
+1956.942261
+1018.648438
+2355.591797
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1663.070923;
+ 1430.918823;
+ 2228.088135]
+1663.070923
+1430.918823
+2228.088135
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2463.247314;
+ 659.075989;
+ 2166.727051]
+2463.247314
+ 659.075989
+2166.727051
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2481.168213;
+ 1330.458496;
+ 2074.79541]
+2481.168213
+1330.458496
+ 2074.79541
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1949.452148;
+ 1950.339966;
+ 1975.768311]
+1949.452148
+1950.339966
+1975.768311
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2662.235107;
+ 1449.370483;
+ 1838.584717]
+2662.235107
+1449.370483
+1838.584717
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2011.534424;
+ 981.84729;
+ 2026.38269]
+2011.534424
+  981.84729
+ 2026.38269
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2200.589355;
+ 1146.053711;
+ 2078.165527]
+2200.589355
+1146.053711
+2078.165527
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2146.202637;
+ 357.02066;
+ 1978.159058]
+2146.202637
+  357.02066
+1978.159058
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1919.497192;
+ 449.29837;
+ 1915.383911]
+1919.497192
+  449.29837
+1915.383911
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2430.666016;
+ 630.469727;
+ 2034.327271]
+2430.666016
+ 630.469727
+2034.327271
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2933.401611;
+ 708.28479;
+ 1900.688599]
+2933.401611
+  708.28479
+1900.688599
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2566.760498;
+ 538.551331;
+ 2186.185059]
+2566.760498
+ 538.551331
+2186.185059
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2310.942627;
+ 205.159958;
+ 1648.078125]
+2310.942627
+ 205.159958
+1648.078125
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2259.638916;
+ 574.023865;
+ 2110.834229]
+2259.638916
+ 574.023865
+2110.834229
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2415.964844;
+ 673.02655;
+ 2114.962158]
+2415.964844
+  673.02655
+2114.962158
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2362.225098;
+ 716.2926639999999;
+ 2175.53418]
+      2362.225098
+716.2926639999999
+       2175.53418
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2297.001953;
+ 395.442657;
+ 1736.062988]
+2297.001953
+ 395.442657
+1736.062988
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1831.304932;
+ 174.91893;
+ 1984.705444]
+1831.304932
+  174.91893
+1984.705444
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2120.117188;
+ 70.71558400000001;
+ 1360.579224]
+      2120.117188
+70.71558400000001
+      1360.579224
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2004.402832;
+ 378.218933;
+ 1853.438354]
+2004.402832
+ 378.218933
+1853.438354
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1886.952881;
+ 552.648132;
+ 1854.258789]
+1886.952881
+ 552.648132
+1854.258789
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1687.224243;
+ 502.518372;
+ 1674.805664]
+1687.224243
+ 502.518372
+1674.805664
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1598.513062;
+ 407.925934;
+ 1855.328613]
+1598.513062
+ 407.925934
+1855.328613
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1366.602051;
+ 1199.671265;
+ 1929.789795]
+1366.602051
+1199.671265
+1929.789795
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1938.531372;
+ 468.498108;
+ 1942.8573]
+1938.531372
+ 468.498108
+  1942.8573
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1615.085693;
+ 602.257446;
+ 1847.865479]
+1615.085693
+ 602.257446
+1847.865479
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1606.989502;
+ 735.463257;
+ 1871.518555]
+1606.989502
+ 735.463257
+1871.518555
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[2246.702637;
+ 810.243713;
+ 2140.680908]
+2246.702637
+ 810.243713
+2140.680908
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1860.928589;
+ 188.346024;
+ 2011.20459]
+1860.928589
+ 188.346024
+ 2011.20459
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1305.901611;
+ 737.648071;
+ 1671.869507]
+1305.901611
+ 737.648071
+1671.869507
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1573.855835;
+ 1437.633911;
+ 1903.033691]
+1573.855835
+1437.633911
+1903.033691
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1568.303345;
+ 981.233459;
+ 1866.908203]
+1568.303345
+ 981.233459
+1866.908203
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1225.670776;
+ 1296.887207;
+ 1377.745117]
+1225.670776
+1296.887207
+1377.745117
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1707.602295;
+ 1486.081665;
+ 1980.515137]
+1707.602295
+1486.081665
+1980.515137
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1650.846191;
+ 1238.146606;
+ 1825.733643]
+1650.846191
+1238.146606
+1825.733643
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1623.139648;
+ 1698.291382;
+ 2015.763916]
+1623.139648
+1698.291382
+2015.763916
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1546.32312;
+ 1688.151123;
+ 1568.817871]
+ 1546.32312
+1688.151123
+1568.817871
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+tvecs
+ROB
+[1751.609619;
+ 1059.603394;
+ 1895.028076]
+1751.609619
+1059.603394
+1895.028076
+CAM
+[-0;
+ -0;
+ -0]
+-0
+-0
+-0
+>>> RESULT <<<
+                     1  1.635286214023629e-17 -3.723933808511448e-19     -100.2261277901825
+-1.635286214023629e-17                      1   2.52146076700963e-18     -406.0468459601283
+ 3.723933808511448e-19  -2.52146076700963e-18                      1      1110.694697278192
+                     0                      0                      0                      1
+Sending Tool Data
+>>> Board Pose <<<
+ 0.9644126047065694  0.1905253248915243  0.1833260168608627   2060.088997109164
+ 0.1306113684215416 -0.9461511120364021  0.2962072646498267   1054.438222149156
+ 0.2298891000507474 -0.2617215577044796 -0.9373648318080845   947.9083413261038
+                  0                   0                   0                   1
+>>> Error <<<
+Mean     >> t: 122.019203262224 / r: 95.05623841574449
+Max      >> t: 265.1431840898146 / r: 178.4458352587196
+Variance >> t: 5349.924815299869 / r: 2569.589521424567
+Client disconnected
+Wow wow wow...What's the rush?!

@@ -33,6 +33,19 @@ file(
         ${CMAKE_CURRENT_BINARY_DIR}/HandEye_Calibration.phop
 )
 
+add_executable(LogReCalibration)
+
+target_sources(LogReCalibration
+    PRIVATE
+        LogReCalibration.cpp
+)
+
+target_link_libraries(LogReCalibration
+    PUBLIC
+        KukaUtils
+        handeye_lib
+)
+
 add_executable(PointCloudCapture)
 
 target_sources(PointCloudCapture
