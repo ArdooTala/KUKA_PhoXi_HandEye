@@ -29,9 +29,12 @@ Eigen::Isometry3d HandEye::calculate_handeye() {
     cv::eigen2cv((Eigen::Vector3d)m_cam[i].translation(), t_target2cam[i]);
   }
 
+  // cv::calibrateHandEye(R_gripper2base, t_gripper2base, R_target2cam,
+  //                      t_target2cam, R_cam2gripper, t_cam2gripper,
+  //                      cv::CALIB_HAND_EYE_DANIILIDIS);
+
   cv::calibrateHandEye(R_gripper2base, t_gripper2base, R_target2cam,
-                       t_target2cam, R_cam2gripper, t_cam2gripper, 
-                       cv::CALIB_HAND_EYE_DANIILIDIS);
+                       t_target2cam, R_cam2gripper, t_cam2gripper);
 
   Eigen::Matrix3d R_res;
   cv::cv2eigen(R_cam2gripper, R_res);
@@ -81,6 +84,9 @@ ReprojectionError HandEye::calculate_reprojection_error() {
 
     std::vector<double> t_err(m_size), r_err(m_size);
 
+    std::cout << ">>> Reprojection Error <<<" << std::endl
+        << "[Index - mm - deg]" << std::endl;
+
     for (int i = 0 ; i < m_size ; i++) {
         const auto &pose = world2target[i];
 
@@ -89,6 +95,8 @@ ReprojectionError HandEye::calculate_reprojection_error() {
         Eigen::Matrix3d R_rel = board_pose.linear().transpose() * pose.linear();
         double cos_angle = std::clamp((R_rel.trace() - 1.0) / 2.0, -1.0, 1.0);
         r_err[i] = std::acos(cos_angle) * 180.0 / M_PI;
+
+        std::cout << i << "\t" << t_err[i] << "\t" << r_err[i] << std::endl;
     }
 
     auto stats = [](const std::vector<double> &v, double &mean, double &max,
