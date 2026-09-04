@@ -1,4 +1,5 @@
 #include "handeye/handeye.h"
+#include "kuka_utils/kuka_utils.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -114,6 +115,16 @@ int main(int argc, char *argv[]) {
 
   auto res = he.calculate_handeye(method);
   std::cout << ">>> RESULT <<<" << std::endl << res.matrix() << std::endl;
+  
+  auto tool_pose = KukaUtils::E6POS(res);
+  std::cout << ">>> Tool Pose <<<" << std::endl
+            << "{X " << tool_pose.x
+            << " Y " << tool_pose.y
+            << " Z " << tool_pose.z
+            << " A " << tool_pose.a
+            << " B " << tool_pose.b
+            << " C " << tool_pose.c
+            << "}" << std::endl;
 
   auto board_pose = he.estimate_board_pose();
   std::cout << ">>> Board Pose <<<" << std::endl
