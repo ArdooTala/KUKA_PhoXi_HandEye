@@ -85,9 +85,13 @@ int main(int argc, char *argv[]) {
 
   if (msg.find("<Tool") != std::string::npos) {
     std::cout << "Sending Tool Data" << std::endl;
+    KukaUtils::E6POS tool_pos(res);
+    std::cout << ">>> Tool Position <<<" << std::endl
+              << "X: " << tool_pos.x << std::endl;
+
     KukaUtils::EKI_MSG eki_msg;
     eki_msg.eki_add_message("MotionCam_M");
-    eki_msg.eki_add_frame(res);
+    eki_msg.eki_add_frame(tool_pos);
 
     server.sendMessage(eki_msg.get_string());
   }

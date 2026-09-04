@@ -12,6 +12,7 @@ struct E6POS {
     double x, y, z, a, b, c;
 
     E6POS (std::string& xml_msg);
+    E6POS (const Eigen::Isometry3d& frame);
 
     Eigen::Vector3d t() const;
     Eigen::Matrix3d r() const;
@@ -30,7 +31,7 @@ struct EKI_MSG {
     EKI_MSG();
 
     void eki_add_flag ();
-    void eki_add_frame (Eigen::Isometry3d frame);
+    void eki_add_frame (const E6POS& pos);
     void eki_add_message (const std::string& msg);
 
     std::string get_string();

@@ -19,6 +19,18 @@ E6POS::E6POS(std::string &xml_msg) {
   c = pos.node().attribute("C").as_double();
 }
 
+E6POS::E6POS(const Eigen::Isometry3d& frame) {
+    Eigen::Vector3d r = frame.rotation().eulerAngles(2, 1, 0);
+    Eigen::Vector3d t = frame.translation();
+
+    x = t[0];
+    y = t[1];
+    z = t[2];
+    a = r[0] * RAD2DEG;
+    b = r[1] * RAD2DEG;
+    c = r[2] * RAD2DEG;
+}
+
 Eigen::Vector3d E6POS::t() const { return Eigen::Vector3d(x, y, z); }
 
 Eigen::Matrix3d E6POS::r() const { return abc2matrix3d(a, b, c); }
@@ -54,17 +66,14 @@ void EKI_MSG::eki_add_message (const std::string& msg) {
     root.append_child("Message").text().set(msg);
 }
 
-void EKI_MSG::eki_add_frame (Eigen::Isometry3d frame) {
-    Eigen::Vector3d r = frame.rotation().eulerAngles(2, 1, 0);
-    Eigen::Vector3d t = frame.translation();
-
+void EKI_MSG::eki_add_frame (const E6POS& pos) {
     pugi::xml_node node = root.append_child("Frame");
-    node.append_attribute("X") = t[0];
-    node.append_attribute("Y") = t[1];
-    node.append_attribute("Z") = t[2];
-    node.append_attribute("A") = r[0] * RAD2DEG;
-    node.append_attribute("B") = r[1] * RAD2DEG;
-    node.append_attribute("C") = r[2] * RAD2DEG;
+    node.append_attribute("X") = pos.x;
+    node.append_attribute("Y") = pos.y;
+    node.append_attribute("Z") = pos.z;
+    node.append_attribute("A") = pos.a;
+    node.append_attribute("B") = pos.b;
+    node.append_attribute("C") = pos.c;
 }
 
 std::string EKI_MSG::get_string() {
