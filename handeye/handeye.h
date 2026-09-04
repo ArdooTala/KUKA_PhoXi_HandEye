@@ -15,7 +15,7 @@ public:
   HandEye(std::vector<Eigen::Isometry3d> &cam,
           std::vector<Eigen::Isometry3d> &rob);
 
-  Eigen::Isometry3d calculate_handeye();
+  Eigen::Isometry3d calculate_handeye(int method = 0);
   Eigen::Isometry3d estimate_board_pose();
   ReprojectionError calculate_reprojection_error();
 

@@ -1,5 +1,4 @@
 #include "handeye/handeye.h"
-#include "kuka_utils/kuka_utils.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -38,6 +37,18 @@ int main(int argc, char *argv[]) {
     std::cout << "Error reading the Log file path" << std::endl;
     return 1;
   }
+
+  int method = 0;
+  if (argc > 2) {
+    try {
+      method = std::stoi(argv[2]);
+    } catch (const std::invalid_argument &e) {
+      std::cerr << "Invalid method argument: " << argv[2]
+          << " (must be an integer)" << std::endl;
+      return 1;
+    }
+  }
+
 
   std::cout.precision(std::numeric_limits<double>::max_digits10 - 1);
 
@@ -101,7 +112,7 @@ int main(int argc, char *argv[]) {
 
   auto he = HandEye::HandEye(cam2board, rob2world);
 
-  auto res = he.calculate_handeye();
+  auto res = he.calculate_handeye(method);
   std::cout << ">>> RESULT <<<" << std::endl << res.matrix() << std::endl;
 
   auto board_pose = he.estimate_board_pose();

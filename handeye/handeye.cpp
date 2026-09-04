@@ -17,9 +17,11 @@ HandEye::HandEye(std::vector<Eigen::Isometry3d> &cam,
   std::cout << "Array Size: " << m_size << std::endl;
 }
 
-Eigen::Isometry3d HandEye::calculate_handeye() {
-  std::vector<cv::Mat> R_gripper2base(m_size), t_gripper2base(m_size),
+Eigen::Isometry3d HandEye::calculate_handeye(int method) {
+  std::vector<cv::Mat>
+      R_gripper2base(m_size), t_gripper2base(m_size),
       R_target2cam(m_size), t_target2cam(m_size);
+
   cv::Mat t_cam2gripper, R_cam2gripper;
 
   for (int i = 0; i < m_size; i++) {
@@ -29,12 +31,9 @@ Eigen::Isometry3d HandEye::calculate_handeye() {
     cv::eigen2cv((Eigen::Vector3d)m_cam[i].translation(), t_target2cam[i]);
   }
 
-  // cv::calibrateHandEye(R_gripper2base, t_gripper2base, R_target2cam,
-  //                      t_target2cam, R_cam2gripper, t_cam2gripper,
-  //                      cv::CALIB_HAND_EYE_DANIILIDIS);
-
   cv::calibrateHandEye(R_gripper2base, t_gripper2base, R_target2cam,
-                       t_target2cam, R_cam2gripper, t_cam2gripper);
+                       t_target2cam, R_cam2gripper, t_cam2gripper,
+                       static_cast<cv::HandEyeCalibrationMethod> (method));
 
   Eigen::Matrix3d R_res;
   cv::cv2eigen(R_cam2gripper, R_res);
