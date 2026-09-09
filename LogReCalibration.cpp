@@ -114,10 +114,14 @@ int main(int argc, char *argv[]) {
   auto he = HandEye::HandEye(cam2board, rob2world);
 
   auto res = he.calculate_handeye(method);
-  std::cout << ">>> RESULT <<<" << std::endl << res.matrix() << std::endl;
+  std::cout << ">>> RESULT <<<" << std::endl
+      << res.matrix() << std::endl;
   
+  std::cout << ">>> RPY: ZY'X\" <<<" << std::endl
+      << res.rotation().eulerAngles(2, 1, 0).transpose() << std::endl;
+
   auto tool_pose = KukaUtils::E6POS(res);
-  std::cout << ">>> Tool Pose <<<" << std::endl
+  std::cout << ">>> Tool TCP <<<" << std::endl
             << "{X " << tool_pose.x
             << " Y " << tool_pose.y
             << " Z " << tool_pose.z
