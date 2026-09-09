@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
 
   auto he = HandEye::HandEye(cam2board, rob2world);
 
-  auto res = he.calculate_handeye();
+  auto res = he.calculate_handeye(4);
   std::cout << ">>> RESULT <<<" << std::endl << res.matrix() << std::endl;
 
   if (msg.find("<Tool") != std::string::npos) {
